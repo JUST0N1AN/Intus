@@ -8,12 +8,10 @@
 
 <script>
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import router from '../router';
+import router from "../router";
 export default {
   data() {
-    return {
-      
-    };
+    return {};
   },
   methods: {
     signIn() {
@@ -24,9 +22,9 @@ export default {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log("Signed in: " + user.uid)
+          console.log("Signed in: " + user.uid);
           // ...
-          router.push('/')
+          this.$router.push({ path: "/" });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -36,8 +34,6 @@ export default {
     },
   },
 };
-
 </script>
 
-<style>
-</style>
+<style></style>
