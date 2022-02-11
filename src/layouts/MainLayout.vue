@@ -11,7 +11,7 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
+        <q-toolbar-title>Intus</q-toolbar-title>
 
         <div>
           <span>| <router-link to="/">Home</router-link> | </span>
