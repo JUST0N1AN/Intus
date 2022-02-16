@@ -14,7 +14,7 @@
       <p><input type="password" placeholder="Password" id="password" /></p>
     </div>
     <div class="row justify-center">
-      <p><button @click="signIn">Submit</button></p>
+      <p><q-btn color="primary" @click="signIn">Submit</q-btn></p>
     </div>
   </div>
 </template>
