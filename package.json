@@ -2,7 +2,7 @@
   "name": "quasar_test",
   "version": "0.0.1",
   "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "productName": "Intus",
   "author": "shane12345601 <shane12345601@gmail.com>",
   "private": true,
   "scripts": {
