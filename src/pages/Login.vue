@@ -1,9 +1,22 @@
 <template>
-  <div>Login Page</div>
-  <h1>Login to Your Account</h1>
-  <p><input type="text" placeholder="Email" id="email" /></p>
-  <p><input type="password" placeholder="Password" id="password" /></p>
-  <p><button @click="signIn">Submit</button></p>
+  <div>
+    <div class="row justify-center">Login Page</div>
+    <div class="row justify-center">
+      <div class="justify-center">
+        <h3>Login to Your Account</h3>
+      </div>
+    </div>
+
+    <div class="row justify-center">
+      <p><input type="text" placeholder="Email" id="email" /></p>
+    </div>
+    <div class="row justify-center">
+      <p><input type="password" placeholder="Password" id="password" /></p>
+    </div>
+    <div class="row justify-center">
+      <p><button @click="signIn">Submit</button></p>
+    </div>
+  </div>
 </template>
 
 <script>

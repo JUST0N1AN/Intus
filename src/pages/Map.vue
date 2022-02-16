@@ -62,9 +62,9 @@ export default {
       console.log(g.id);
     },
     createMarker(event) {
-        console.log(event.latLng.lat());
-        console.log(event.latLng.lng());
-    //   console.log("Marker Created: " + markerID);
+      console.log(event.latLng.lat());
+      console.log(event.latLng.lng());
+      //   console.log("Marker Created: " + markerID);
       this.markers.push({
         position: {
           lat: event.latLng.lat(),
@@ -74,12 +74,12 @@ export default {
       });
     },
     deleteMarker(mark) {
-    //   console.log(this.markers[1].position.id);
-      for(let i=0; i<this.markers.length; i++){
-          if(this.markers[i+1].position.id == mark.id){
-              this.markers.splice(i+1, 1);
-              break;
-          }
+      //   console.log(this.markers[1].position.id);
+      for (let i = 0; i < this.markers.length; i++) {
+        if (this.markers[i + 1].position.id == mark.id) {
+          this.markers.splice(i + 1, 1);
+          break;
+        }
       }
     },
   },
@@ -91,5 +91,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

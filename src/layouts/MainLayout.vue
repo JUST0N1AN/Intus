@@ -13,35 +13,57 @@
 
         <q-toolbar-title>Intus</q-toolbar-title>
 
-        <div>
-          <span>| <router-link to="/">Home</router-link> | </span>
-          <span><router-link to="/about">About</router-link> | </span>
-          <span><router-link to="/map">Map</router-link> | </span>
-          <span v-if="!loggedIn"
-            ><router-link to="/login">Login</router-link> |
-          </span>
-          <span v-if="!loggedIn"
-            ><router-link to="/register">Register</router-link> |
-          </span>
-          <span v-if="loggedIn"
-            ><a @click="logoutUser" href="#">Logout</a> |
-          </span>
-          <span v-if="loggedIn"
-            ><router-link to="/upload">Upload</router-link> | </span
-          >Quasar v{{ $q.version }}
-        </div>
+        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+      <q-icon></q-icon>
       <q-list>
-        <q-item-label header> Essential Links </q-item-label>
+        <q-item clickable v-ripple to="/">
+          <q-item-section avatar>
+            <q-icon color="primary" name="las la-home" />
+          </q-item-section>
+          <q-item-section>Home</q-item-section>
+        </q-item>
+        <q-item clickable v-ripple to="/about">
+          <q-item-section avatar>
+            <q-icon color="primary" name="las la-question" />
+          </q-item-section>
+          <q-item-section>About</q-item-section>
+        </q-item>
+        <q-item clickable v-ripple to="map">
+          <q-item-section avatar>
+            <q-icon color="primary" name="las la-map-marked-alt" />
+          </q-item-section>
+          <q-item-section>Map</q-item-section>
+        </q-item>
+        <q-item clickable v-ripple v-if="loggedIn" v-on:click="logoutUser">
+          <q-item-section avatar>
+            <q-icon color="primary" name="las la-sign-out-alt" />
+          </q-item-section>
+          <q-item-section>Logout</q-item-section>
+        </q-item>
+        <q-item clickable v-ripple v-if="!loggedIn" to="login">
+          <q-item-section avatar>
+            <q-icon color="primary" name="las la-user-circle" />
+          </q-item-section>
+          <q-item-section>Login</q-item-section>
+        </q-item>
+        <q-item clickable v-ripple v-if="!loggedIn" to="register">
+          <q-item-section avatar>
+            <q-icon color="primary" name="home" />
+          </q-item-section>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+          <q-item-section>Register</q-item-section>
+        </q-item>
+        <q-item clickable v-ripple v-if="loggedIn" to="upload">
+          <q-item-section avatar>
+            <q-icon color="primary" name="las la-file-upload" />
+          </q-item-section>
+
+          <q-item-section>Upload</q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
@@ -52,53 +74,6 @@
 </template>
 
 <script>
-import EssentialLink from "components/EssentialLink.vue";
-
-const linksList = [
-  {
-    title: "Docs",
-    caption: "quasar.dev",
-    icon: "school",
-    link: "https://quasar.dev",
-  },
-  {
-    title: "Github",
-    caption: "github.com/quasarframework",
-    icon: "code",
-    link: "https://github.com/quasarframework",
-  },
-  {
-    title: "Discord Chat Channel",
-    caption: "chat.quasar.dev",
-    icon: "chat",
-    link: "https://chat.quasar.dev",
-  },
-  {
-    title: "Forum",
-    caption: "forum.quasar.dev",
-    icon: "record_voice_over",
-    link: "https://forum.quasar.dev",
-  },
-  {
-    title: "Twitter",
-    caption: "@quasarframework",
-    icon: "rss_feed",
-    link: "https://twitter.quasar.dev",
-  },
-  {
-    title: "Facebook",
-    caption: "@QuasarFramework",
-    icon: "public",
-    link: "https://facebook.quasar.dev",
-  },
-  {
-    title: "Quasar Awesome",
-    caption: "Community Quasar projects",
-    icon: "favorite",
-    link: "https://awesome.quasar.dev",
-  },
-];
-
 import { defineComponent, ref } from "vue";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { collection, addDoc, setDoc, doc, updateDoc } from "firebase/firestore";
@@ -112,15 +87,12 @@ export default defineComponent({
       loggedIn: false,
     };
   },
-  components: {
-    EssentialLink,
-  },
+  components: {},
 
   setup() {
     const leftDrawerOpen = ref(false);
 
     return {
-      essentialLinks: linksList,
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
