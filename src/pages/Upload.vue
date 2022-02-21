@@ -44,6 +44,12 @@ export default {
       uploadBytes(storageRef, files[0], metadata).then((snapshot) => {
         console.log("File Uploaded");
       });
+      const docRef = addDoc(
+        collection(db, "users", user.uid, "media", file[0].name),
+        {
+          url: "",
+        }
+      );
       console.log(storageRef.fullPath);
       this.filenames.push(files[0].name);
       this.createImage(item, files[0]);

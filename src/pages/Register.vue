@@ -13,6 +13,7 @@
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc, setDoc, doc, updateDoc } from "firebase/firestore";
 import db from "../boot/firebase.js";
+
 export default {
   data() {
     return {};
@@ -37,10 +38,10 @@ export default {
             })
               .then(() => {
                 console.log("reached");
-                const userRef = doc(db, "users", user.uid);
-                updateDoc(userRef, "media", {
-                  imageId: null,
-                });
+                // const docRef = addDoc(
+                //   collection(db, "users", user.uid, "media",""),
+                //   {}
+                // );
                 this.$router.push({ path: "/" });
               })
               .catch((error) => {
