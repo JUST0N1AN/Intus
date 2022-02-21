@@ -64,6 +64,13 @@
 
           <q-item-section>Upload</q-item-section>
         </q-item>
+        <q-item clickable v-ripple v-if="loggedIn" to="mydocs">
+          <q-item-section avatar>
+            <q-icon color="primary" name="las la-file" />
+          </q-item-section>
+
+          <q-item-section>My Documents</q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 

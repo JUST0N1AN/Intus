@@ -34,7 +34,18 @@ export default {
             console.log(user.uid);
             setDoc(doc(db, "users", user.uid), {
               email: email,
-            });
+            })
+              .then(() => {
+                console.log("reached");
+                const userRef = doc(db, "users", user.uid);
+                updateDoc(userRef, "media", {
+                  imageId: null,
+                });
+                this.$router.push({ path: "/" });
+              })
+              .catch((error) => {
+                console.log("Error occured in register: " + error);
+              });
             // ...
           })
           .catch((error) => {

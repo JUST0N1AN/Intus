@@ -7,8 +7,8 @@
     </div>
     <div v-else>
       <img :src="item.image" />
-      <p v-for="i in filenames" :key="i">{{i}}</p>
-      <br>
+      <p v-for="i in filenames" :key="i">{{ i }}</p>
+      <br />
       <button @click="removeImage(item)">Remove image</button>
     </div>
   </div>
@@ -26,8 +26,7 @@ export default {
           image: false,
         },
       ],
-      filenames: [
-      ]
+      filenames: [],
     };
   },
   methods: {
@@ -36,16 +35,17 @@ export default {
       if (!files.length) return;
       const metadata = {
         customMetadata: {
-          "uid" : "1234",
-          "you" : 1
-        }
-      }
-      const storage =getStorage();
-      const storageRef = ref(storage, files[0].name)
+          uid: "1234",
+          you: 1,
+        },
+      };
+      const storage = getStorage();
+      const storageRef = ref(storage, files[0].name);
       uploadBytes(storageRef, files[0], metadata).then((snapshot) => {
-         console.log('File Uploaded')
-       })
-      this.filenames.push(files[0].name)
+        console.log("File Uploaded");
+      });
+      console.log(storageRef.fullPath);
+      this.filenames.push(files[0].name);
       this.createImage(item, files[0]);
     },
     createImage(item, file) {
@@ -58,13 +58,15 @@ export default {
       reader.readAsDataURL(file);
     },
     removeImage: function (item) {
-      const storage =getStorage();
-      const deleteRef = ref(storage, this.filenames[0])
-      deleteObject(deleteRef).then(()=>{
-        console.log('Successfully Deleted')
-      }).catch((error)=>{
-        console.log('File cannot be Deleted')
-      });
+      const storage = getStorage();
+      const deleteRef = ref(storage, this.filenames[0]);
+      deleteObject(deleteRef)
+        .then(() => {
+          console.log("Successfully Deleted");
+        })
+        .catch((error) => {
+          console.log("File cannot be Deleted");
+        });
       item.image = false;
     },
   },
