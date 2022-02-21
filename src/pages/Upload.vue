@@ -15,7 +15,17 @@
 </template>
 
 <script>
-import { getStorage, ref, uploadBytes, deleteObject } from "firebase/storage";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  deleteObject,
+  getDownloadURL,
+} from "firebase/storage";
+import { collection, addDoc, setDoc, doc, updateDoc } from "firebase/firestore";
+import db from "../boot/firebase.js";
+
 export default {
   data() {
     return {
@@ -31,6 +41,8 @@ export default {
   },
   methods: {
     onFileChange(item, e) {
+      const auth = getAuth();
+      const user = auth.currentUser;
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
       const metadata = {
@@ -43,14 +55,14 @@ export default {
       const storageRef = ref(storage, files[0].name);
       uploadBytes(storageRef, files[0], metadata).then((snapshot) => {
         console.log("File Uploaded");
+        getDownloadURL(storageRef).then((url) => {
+          const docRef = addDoc(collection(db, "users", user.uid, "media"), {
+            name: files[0].name,
+            fileUrl: url,
+          });
+        });
       });
-      const docRef = addDoc(
-        collection(db, "users", user.uid, "media", file[0].name),
-        {
-          url: "",
-        }
-      );
-      console.log(storageRef.fullPath);
+
       this.filenames.push(files[0].name);
       this.createImage(item, files[0]);
     },
