@@ -57,6 +57,13 @@
 
           <q-item-section>Register</q-item-section>
         </q-item>
+        <q-item to="/businessReg">
+          <q-item-section avatar>
+            <q-icon color="primary" name="las la-file-upload" />
+          </q-item-section>
+
+           <q-item-section>Business Register</q-item-section>
+        </q-item>
         <q-item clickable v-ripple v-if="loggedIn" to="upload">
           <q-item-section avatar>
             <q-icon color="primary" name="las la-file-upload" />
