@@ -44,9 +44,9 @@
           :rules="[val => !!val || 'Field is required']"
           id="address"
         >
-         <template v-slot:prepend>
+          <template v-slot:prepend>
             <q-icon name="place" />
-        </template>
+          </template>
         </q-input>
 
         <q-input
@@ -58,11 +58,11 @@
           hint="Mask: (###) ### - ####"
           :rules="[val => !!val || 'Field is required']"
           id="contactNumber"
-          >
+        >
           <template v-slot:prepend>
             <q-icon name="phone" />
-        </template>
-          </q-input>
+          </template>
+        </q-input>
 
         <q-file
           v-model="formData.file"
@@ -91,6 +91,9 @@
 
 <script>
 
+import { getAuth } from "firebase/auth";
+import { collection, addDoc, setDoc, doc, updateDoc } from "firebase/firestore";
+import db from "../boot/firebase.js";
 export default {
 
   data() {
@@ -102,7 +105,7 @@ export default {
         address: null,
         contactNumber: null,
         file: null,
-
+        approved: false,
       },
 
       options: ['Sole Proprietorship', 'Partnership', 'Limited Liability Company', 'NGO'],
@@ -111,7 +114,33 @@ export default {
   },
   methods: {
     submitForm() {
-      alert("Business name is: " + this.formData.name);
+      const auth = getAuth();
+      const user = auth.currentUser;
+      var today = new Date();
+      var date = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear();
+
+
+      if (user) {
+        const docRef = addDoc(collection(db, "users", user.uid, "Business Form"), {
+          businessName: this.formData.name,
+          registrationNumber: this.formData.regNumber,
+          businessType: this.formData.type,
+          address: this.formData.address,
+          contactNumber: this.formData.contactNumber,
+          //proofOfAddress: this.formData.file,
+          approved: this.formData.approved,
+          date: String(this.today)
+        });
+
+        alert("Application Submitted and is Pending Approval " + this.formData.name);
+
+
+      }
+
+      else {
+        alert("You must be signed in")
+      }
+
     }
 
   }
