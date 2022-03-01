@@ -40,8 +40,9 @@ export default {
             // Signed in
             const user = userCredential.user;
             console.log(user.uid);
-            setDoc(doc(db, "businesses", user.uid), {
+            setDoc(doc(db, "business", user.uid), {
               email: email,
+              type: "bus",
             })
               .then(() => {
                 console.log("reached");

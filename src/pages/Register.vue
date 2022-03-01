@@ -38,6 +38,7 @@ export default {
             console.log(user.uid);
             setDoc(doc(db, "users", user.uid), {
               email: email,
+              type: "user",
             })
               .then(() => {
                 console.log("reached");
