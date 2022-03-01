@@ -21,23 +21,43 @@
 
 <script>
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  collection,
+  addDoc,
+  setDoc,
+  doc,
+  updateDoc,
+  getDoc,
+} from "firebase/firestore";
 import router from "../router";
+import db from "../boot/firebase.js";
 export default {
   data() {
     return {};
   },
   methods: {
-    signIn() {
+    async signIn() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       const auth = getAuth();
       signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        .then(async (userCredential) => {
           // Signed in
           const user = userCredential.user;
           console.log("Signed in: " + user.uid);
           // ...
-          this.$router.push({ path: "/" });
+          const docRef = doc(db, "users", user.uid);
+
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            if (docSnap.data().type == "user") {
+              this.$router.push({ path: "/" });
+            }
+          } else {
+            // doc.data() will be undefined in this case
+            this.$router.push({ path: "/IndexBusiness" });
+          }
         })
         .catch((error) => {
           const errorCode = error.code;

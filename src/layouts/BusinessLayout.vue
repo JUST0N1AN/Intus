@@ -20,17 +20,11 @@
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-icon></q-icon>
       <q-list>
-        <q-item clickable v-ripple to="/">
+        <q-item clickable v-ripple to="/IndexBusiness">
           <q-item-section avatar>
             <q-icon color="primary" name="las la-home" />
           </q-item-section>
           <q-item-section>Home</q-item-section>
-        </q-item>
-        <q-item clickable v-ripple to="/about">
-          <q-item-section avatar>
-            <q-icon color="primary" name="las la-question" />
-          </q-item-section>
-          <q-item-section>About</q-item-section>
         </q-item>
         <q-item clickable v-ripple to="map">
           <q-item-section avatar>
@@ -57,14 +51,14 @@
 
           <q-item-section>Register</q-item-section>
         </q-item>
-        <!-- <q-item to="/verbusiness">
+        <q-item to="/verbusiness">
           <q-item-section avatar>
             <q-icon color="primary" name="las la-file-upload" />
           </q-item-section>
 
           <q-item-section>Business Verification</q-item-section>
-        </q-item> -->
-        <q-item clickable v-ripple v-if="loggedIn" to="upload">
+        </q-item>
+        <!-- <q-item clickable v-ripple v-if="loggedIn" to="upload">
           <q-item-section avatar>
             <q-icon color="primary" name="las la-file-upload" />
           </q-item-section>
@@ -77,7 +71,7 @@
           </q-item-section>
 
           <q-item-section>My Documents</q-item-section>
-        </q-item>
+        </q-item> -->
       </q-list>
     </q-drawer>
 
@@ -94,11 +88,11 @@ import { collection, addDoc, setDoc, doc, updateDoc } from "firebase/firestore";
 import db from "../boot/firebase.js";
 
 export default defineComponent({
-  name: "MainLayout",
+  name: "BusinessLayout",
 
   data() {
     return {
-      loggedIn: false,
+      loggedIn: true,
     };
   },
   components: {},
@@ -127,22 +121,6 @@ export default defineComponent({
           // An error happened.
         });
     },
-  },
-  mounted() {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
-        console.log(uid);
-        this.loggedIn = true;
-      } else {
-        // User is signed out
-        // ...
-        console.log("Not signed in");
-      }
-    });
   },
 });
 </script>

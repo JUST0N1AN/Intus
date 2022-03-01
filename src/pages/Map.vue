@@ -18,7 +18,10 @@
         :zoom="15"
         @click="createMarker"
       >
-        <Marker :options="{ position: center }" @click="markerClick" />
+        <Marker
+          :options="{ position: center, icon: homeimg }"
+          @click="markerClick"
+        />
         <Marker
           v-for="m in markers"
           v-bind:key="m"
@@ -42,6 +45,8 @@ export default {
     return {
       center: { lat: 0, lng: 0 },
       markers: [{}],
+      homeimg:
+        "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
     };
   },
   methods: {

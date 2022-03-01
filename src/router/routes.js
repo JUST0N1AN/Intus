@@ -51,9 +51,17 @@ const routes = [
   {
     path: "/verbusiness",
     name: "VerifyBusiness",
-    component: () => import("layouts/MainLayout.vue"),
+    component: () => import("layouts/BusinessLayout.vue"),
     children: [
       { path: "", component: () => import("pages/VerifyBusiness.vue") },
+    ],
+  },
+  {
+    path: "/IndexBusiness",
+    name: "IndexBusiness",
+    component: () => import("layouts/BusinessLayout.vue"),
+    children: [
+      { path: "", component: () => import("pages/IndexBusiness.vue") },
     ],
   },
 

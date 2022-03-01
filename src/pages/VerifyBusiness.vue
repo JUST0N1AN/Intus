@@ -3,7 +3,7 @@
 
   <div class="row">
     <div class="col-6 offset-3">
-      <q-form @submit="submitForm">
+      <q-form>
         <q-input
           square
           filled
