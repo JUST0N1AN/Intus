@@ -1,30 +1,32 @@
 <template>
-  <div>Div 1</div>
-  <div>Div 2</div>
-  <div id="MAP">
-    MAP
-    <button @click="findCurrLoc">Click to go to Location</button>
-    <GoogleMap
-      api-key="AIzaSyDiiDgmEFzFbSWwazFPKNwWctFyPjGppVs"
-      style="
-        width: 500px;
-        height: 500px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-      "
-      :center="center"
-      :zoom="15"
-      @click="createMarker"
-    >
-      <Marker :options="{ position: center }" @click="markerClick" />
-      <Marker
-        v-for="m in markers"
-        v-bind:key="m"
-        :options="{ position: m.position }"
-        @click="deleteMarker(m.position)"
-      />
-    </GoogleMap>
+  <div class="row justify-center">
+    <div id="MAP">
+      <h3 class="row justify-center">Map Demo</h3>
+      <div class="row justify-center q-mb-md">
+        <q-btn @click="findCurrLoc" color="primary">Recenter</q-btn>
+      </div>
+      <GoogleMap
+        api-key="AIzaSyDiiDgmEFzFbSWwazFPKNwWctFyPjGppVs"
+        style="
+          width: 500px;
+          height: 500px;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        "
+        :center="center"
+        :zoom="15"
+        @click="createMarker"
+      >
+        <Marker :options="{ position: center }" @click="markerClick" />
+        <Marker
+          v-for="m in markers"
+          v-bind:key="m"
+          :options="{ position: m.position }"
+          @click="deleteMarker(m.position)"
+        />
+      </GoogleMap>
+    </div>
   </div>
 </template>
 

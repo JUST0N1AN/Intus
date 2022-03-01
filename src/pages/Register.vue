@@ -1,7 +1,9 @@
 <template>
   <div>Register user</div>
   <h3>Register An Account</h3>
-  <q-btn to="/regbusiness">PTSD</q-btn>
+  <q-btn class="q-mb-md" to="/regbusiness" color="primary"
+    >Click Here to Register a Business</q-btn
+  >
   <p><input type="text" placeholder="Email" id="email" /></p>
   <p><input type="password" placeholder="Password" id="password" /></p>
   <p>

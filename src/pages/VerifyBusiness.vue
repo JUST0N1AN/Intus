@@ -1,5 +1,5 @@
 <template>
-  <h3 class="row justify-center">Business Registration</h3>
+  <h3 class="row justify-center">Business Verification</h3>
 
   <div class="row">
     <div class="col-6 offset-3">
@@ -71,7 +71,6 @@
           filled
           counter
           hint="Utlity Bill or Notice of Address"
-          :counter-label="counterLabelFn"
           max-files="1"
           multiple
         >
