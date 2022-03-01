@@ -1,16 +1,26 @@
 <template>
-  <div>Upload Pahe</div>
-  <div v-for="item in items" :key="item">
-    <div v-if="!item.image">
-      <h2>Select an image</h2>
-      <input type="file" @change="onFileChange(item, $event)" />
+  <div class="row">
+    <div class="col-6 offset-3">
+      <h4>Upload Pahe</h4>
+      <h2>Select A File</h2>
+      <q-file
+        v-model="formData"
+        label="Upload Your Document"
+        square
+        filled
+        counter
+        hint="Documents"
+        max-files="1"
+        multiple
+      >
+        <template v-slot:prepend>
+          <q-icon name="attach_file" />
+        </template>
+      </q-file>
     </div>
-    <div v-else>
-      <img :src="item.image" />
-      <p v-for="i in filenames" :key="i">{{ i }}</p>
-      <br />
-      <button @click="removeImage(item)">Remove image</button>
-    </div>
+  </div>
+  <div class="row justify-center q-pt-md">
+    <q-btn @click="sub()" color="primary">Upload</q-btn>
   </div>
 </template>
 
@@ -37,9 +47,32 @@ export default {
         },
       ],
       filenames: [],
+      formData: null,
     };
   },
   methods: {
+    sub() {
+      console.log(this.formData[0].name);
+      const auth = getAuth();
+      const user = auth.currentUser;
+      const metadata = {
+        customMetadata: {
+          uid: "1234",
+          you: 1,
+        },
+      };
+      const storage = getStorage();
+      const storageRef = ref(storage, this.formData[0].name);
+      uploadBytes(storageRef, this.formData[0], metadata).then((snapshot) => {
+        console.log("File Uploaded");
+        getDownloadURL(storageRef).then((url) => {
+          const docRef = addDoc(collection(db, "users", user.uid, "media"), {
+            name: this.formData[0].name,
+            fileUrl: url,
+          });
+        });
+      });
+    },
     onFileChange(item, e) {
       const auth = getAuth();
       const user = auth.currentUser;

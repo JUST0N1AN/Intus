@@ -17,6 +17,14 @@ const routes = [
     children: [{ path: "", component: () => import("pages/Map.vue") }],
   },
   {
+    path: "/regbusiness",
+    name: "RegisterBusiness",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [
+      { path: "", component: () => import("pages/RegisterBusiness.vue") },
+    ],
+  },
+  {
     path: "/login",
     name: "Login",
     component: () => import("layouts/MainLayout.vue"),
@@ -41,10 +49,12 @@ const routes = [
     children: [{ path: "", component: () => import("pages/MyDocs.vue") }],
   },
   {
-    path: "/businessReg",
-    name: "BusinessRegister",
+    path: "/verbusiness",
+    name: "VerifyBusiness",
     component: () => import("layouts/MainLayout.vue"),
-    children: [{ path: "", component: () => import("pages/BusinessRegister.vue") }],
+    children: [
+      { path: "", component: () => import("pages/VerifyBusiness.vue") },
+    ],
   },
 
   // Always leave this as last one,

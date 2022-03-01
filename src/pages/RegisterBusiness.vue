@@ -1,13 +1,19 @@
 <template>
-  <div>Register user</div>
-  <h3>Register An Account</h3>
-  <q-btn to="/regbusiness">PTSD</q-btn>
-  <p><input type="text" placeholder="Email" id="email" /></p>
-  <p><input type="password" placeholder="Password" id="password" /></p>
-  <p>
-    <input type="password" placeholder="Retype Password" id="secondPassword" />
-  </p>
-  <p><button @click="registerUser">Submit</button></p>
+  <div class="row">
+    <div class="col-6 offset-3">
+      <h3>Register Business Account</h3>
+      <p><input type="text" placeholder="Email" id="email" /></p>
+      <p><input type="password" placeholder="Password" id="password" /></p>
+      <p>
+        <input
+          type="password"
+          placeholder="Retype Password"
+          id="secondPassword"
+        />
+      </p>
+      <p><button @click="registerUser">Submit</button></p>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -34,7 +40,7 @@ export default {
             // Signed in
             const user = userCredential.user;
             console.log(user.uid);
-            setDoc(doc(db, "users", user.uid), {
+            setDoc(doc(db, "businesses", user.uid), {
               email: email,
             })
               .then(() => {
