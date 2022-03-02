@@ -6,15 +6,39 @@
         <h3>Login to Your Account</h3>
       </div>
     </div>
-
-    <div class="row justify-center">
-      <p><input type="text" placeholder="Email" id="email" /></p>
-    </div>
-    <div class="row justify-center">
-      <p><input type="password" placeholder="Password" id="password" /></p>
-    </div>
-    <div class="row justify-center">
-      <p><q-btn color="primary" @click="signIn">Submit</q-btn></p>
+    <div class="row">
+      <div class="col-6 offset-3">
+        <q-form>
+          <q-input
+            square
+            filled
+            v-model="email"
+            label="Email"
+            type="email"
+            :rules="[(val) => val.includes('@') || 'Field is required']"
+            id="email"
+            required
+          />
+          <q-input
+            square
+            filled
+            v-model="password"
+            :type="isPwd ? 'password' : 'text'"
+            hint="Password"
+          >
+            <template v-slot:append>
+              <q-icon
+                :name="isPwd ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isPwd = !isPwd"
+              />
+            </template>
+          </q-input>
+        </q-form>
+        <p class="row justify-center">
+          <q-btn @click="signIn" color="primary">Submit</q-btn>
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -31,16 +55,19 @@ import {
 } from "firebase/firestore";
 import router from "../router";
 import db from "../boot/firebase.js";
+import { ref } from "vue";
 export default {
   data() {
-    return {};
+    return {
+      isPwd: ref(true),
+      password: null,
+      email: null,
+    };
   },
   methods: {
     async signIn() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
       const auth = getAuth();
-      signInWithEmailAndPassword(auth, email, password)
+      signInWithEmailAndPassword(auth, this.email, this.password)
         .then(async (userCredential) => {
           // Signed in
           const user = userCredential.user;
@@ -63,7 +90,7 @@ export default {
           const errorCode = error.code;
           const errorMessage = error.message;
         });
-      console.log("Email: " + email + "\nPassord: " + password);
+      console.log("Email: " + this.email + "\nPassord: " + this.password);
     },
   },
 };

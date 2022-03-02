@@ -1,5 +1,5 @@
 <template>
   <div class="flex flex-center about">
-    <h1>This is an about page</h1>
+    <h2>About Fresher's Tech</h2>
   </div>
 </template>
