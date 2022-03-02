@@ -26,15 +26,45 @@
           v-for="m in markers"
           v-bind:key="m"
           :options="{ position: m.position }"
-          @click="deleteMarker(m.position)"
+          @click="markerClick(m.position)"
         />
       </GoogleMap>
     </div>
   </div>
+  <q-dialog v-model="carousel">
+    <q-carousel
+      transition-prev="slide-right"
+      transition-next="slide-left"
+      swipeable
+      animated
+      v-model="slide"
+      control-color="primary"
+      navigation-icon="radio_button_unchecked"
+      navigation
+      padding
+      height="200px"
+      class="bg-white shadow-1 rounded-borders"
+    >
+      <q-carousel-slide :name="1" class="column no-wrap flex-center">
+        <q-icon name="las la-igloo" color="primary" size="56px" />
+        <div class="q-mt-md text-center">
+          <div class="text-h6">{{ busName }}</div>
+          Relevent Business Information and Description would be here
+        </div>
+      </q-carousel-slide>
+      <q-carousel-slide :name="2" class="column no-wrap flex-center">
+        <q-icon name="las la-copy" color="primary" size="56px" />
+        <div class="q-mt-md text-center">
+          <div class="text-h6">Venue Requirements</div>
+          Requirements to enter venue would be here
+        </div>
+      </q-carousel-slide>
+    </q-carousel>
+  </q-dialog>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { GoogleMap, Marker } from "vue3-google-map";
 let apiKey = "AIzaSyDiiDgmEFzFbSWwazFPKNwWctFyPjGppVs";
 let markerID = 0;
@@ -47,6 +77,10 @@ export default {
       markers: [{}],
       homeimg:
         "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
+      carousel: false,
+      slide: ref(1),
+      busName: null,
+      busDes: null,
     };
   },
   methods: {
@@ -66,7 +100,9 @@ export default {
       );
     },
     markerClick(g) {
-      console.log(g.id);
+      console.log(g.name);
+      this.carousel = true;
+      this.busName = g.name;
     },
     createMarker(event) {
       console.log(event.latLng.lat());
@@ -77,6 +113,8 @@ export default {
           lat: event.latLng.lat(),
           lng: event.latLng.lng(),
           id: markerID++,
+          name: "Test Business ",
+          des: "Description of Business",
         },
       });
     },
@@ -94,7 +132,17 @@ export default {
     this.findCurrLoc();
   },
 
-  mounted() {},
+  mounted() {
+    this.markers.push({
+      position: {
+        lat: 10.18054893099064,
+        lng: -61.46154993919575,
+        id: markerID++,
+        name: "Test Business ",
+        des: "Description of Business",
+      },
+    });
+  },
 };
 </script>
 
