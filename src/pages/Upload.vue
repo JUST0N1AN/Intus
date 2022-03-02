@@ -22,6 +22,21 @@
   <div class="row justify-center q-pt-md">
     <q-btn @click="sub()" color="primary">Upload</q-btn>
   </div>
+  <q-dialog v-model="alert">
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">Upload Successful</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        Your file has been uploaded Successfully!
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="OK" color="primary" v-close-popup />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
@@ -48,6 +63,7 @@ export default {
       ],
       filenames: [],
       formData: null,
+      alert: false,
     };
   },
   methods: {
@@ -65,6 +81,7 @@ export default {
       const storageRef = ref(storage, this.formData[0].name);
       uploadBytes(storageRef, this.formData[0], metadata).then((snapshot) => {
         console.log("File Uploaded");
+        this.alert = true;
         getDownloadURL(storageRef).then((url) => {
           const docRef = addDoc(collection(db, "users", user.uid, "media"), {
             name: this.formData[0].name,
