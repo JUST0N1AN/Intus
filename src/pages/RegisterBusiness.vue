@@ -94,7 +94,7 @@ export default {
                 //   collection(db, "users", user.uid, "media",""),
                 //   {}
                 // );
-                this.$router.push({ path: "/" });
+                this.$router.push({ path: "/IndexBusiness" });
               })
               .catch((error) => {
                 console.log("Error occured in register: " + error);

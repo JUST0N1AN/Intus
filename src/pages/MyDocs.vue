@@ -1,5 +1,8 @@
 <template>
   <div class="row justify-center"><h3>These are Your Documents</h3></div>
+  <div class="row justify-center" v-if="documents[0] == null">
+    You have not uploaded any documents
+  </div>
   <div class="q-pb-md"></div>
   <p class="row justify-center" v-for="(i, index) in documents" :key="index">
     <a :href="i.data().fileUrl" class="q-pr-md" target="_blank">{{
