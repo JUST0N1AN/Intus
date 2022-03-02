@@ -78,6 +78,13 @@
 
           <q-item-section>My Documents</q-item-section>
         </q-item>
+        <q-item to="/qrcode" v-if="loggedIn">
+          <q-item-section avatar>
+            <q-icon color="primary" name="las la-qrcode" />
+          </q-item-section>
+
+          <q-item-section>QRCode</q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
