@@ -1,7 +1,7 @@
 <template>
   <h3 class="row justify-center">Business Verification</h3>
 
-  <div class="row">
+  <div class="row" v-if="!exists">
     <div class="col-6 offset-3">
       <q-form>
         <q-input
@@ -80,20 +80,23 @@
         </q-file>
       </q-form>
       <div class="row justify-center q-pt-md">
-        <q-btn
-          @click="regBus()"
-          type="submit"
-          label="submit"
-          color="primary"
-        ></q-btn>
+        <q-btn @click="regBus()" type="submit" label="submit" color="primary"></q-btn>
       </div>
     </div>
   </div>
+  <h3>Your Application Is Pending Approval</h3>
+  <div class ="q-pa-md" v-if="this.documents[0].data().approved">
+    <h3>Your application has been approved</h3>
+    <q-icon class="las la-check-circle" size='xl' color="green"></q-icon>
+  </div>
+
+  <p>You can edit your document and resubmit.</p>
 </template>
 
 <script>
 import { getAuth } from "firebase/auth";
-import { collection, addDoc, setDoc, doc, updateDoc } from "firebase/firestore";
+import { collection, addDoc, setDoc, doc, updateDoc,getDocs } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "firebase/storage";
 import db from "../boot/firebase.js";
 export default {
   data() {
@@ -107,6 +110,7 @@ export default {
         file: null,
         approved: false,
       },
+      documents: [],
 
       options: [
         "Sole Proprietorship",
@@ -114,12 +118,17 @@ export default {
         "Limited Liability Company",
         "NGO",
       ],
+
+      exists: null,
+      approved: null,
     };
   },
   methods: {
     regBus() {
       const auth = getAuth();
       const user = auth.currentUser;
+      const storage = getStorage();
+      const storageRef = ref(storage, this.formData.file[0].name);
       var today = new Date();
       var date =
         today.getDate() +
@@ -129,20 +138,24 @@ export default {
         today.getFullYear();
 
       if (user) {
-        const docRef = addDoc(
-          collection(db, "users", user.uid, "Business Form"),
-          {
-            businessName: this.formData.name,
-            registrationNumber: this.formData.regNumber,
-            businessType: this.formData.type,
-            address: this.formData.address,
-            contactNumber: this.formData.contactNumber,
-            //proofOfAddress: this.formData.file,
-            approved: this.formData.approved,
-            date: String(this.today),
-          }
-        );
 
+        uploadBytes(storageRef, this.formData.file[0]).then((snapshot) => {
+          getDownloadURL(storageRef).then((url) => {
+            const docRef = addDoc(collection(db, "business", user.uid, "Business Form"),
+              {
+                businessName: this.formData.name,
+                registrationNumber: this.formData.regNumber,
+                businessType: this.formData.type,
+                address: this.formData.address,
+                contactNumber: this.formData.contactNumber,
+                file: this.formData.file[0].name,
+                fileUrl: url,
+                approved: this.formData.approved,
+                date: String(this.today),
+              }
+            );
+          });
+        });
         alert(
           "Application Submitted and is Pending Approval " + this.formData.name
         );
@@ -150,7 +163,32 @@ export default {
         alert("You must be signed in");
       }
     },
+    async checkApplicationExistence() {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      const docRef = collection(db, "business", user.uid,"Business Form");
+      const docSnap = await getDocs(docRef);
+
+      if (docSnap.size > 0) {
+        this.exists = true;
+        console.log("Exists");
+        docSnap.forEach((doc)=>{
+          this.documents.push(doc)
+        })
+        //console.log(this.documents[0].data().approved);
+      } else {
+        this.exists = false;
+        console.log("No such document!");
+      }
+
+    },
+    editForm(){
+
+    }
   },
+  created() {
+    this.checkApplicationExistence();
+  }
 };
 </script>
 <style>
