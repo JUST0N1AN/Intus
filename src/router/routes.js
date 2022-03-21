@@ -13,7 +13,7 @@ const routes = [
   {
     path: "/busoptions",
     name: "BusinessOptions",
-    component: () => import("layouts/MainLayout.vue"),
+    component: () => import("layouts/BusinessLayout.vue"),
     children: [
       { path: "", component: () => import("pages/BusinessOptions.vue") },
     ],
