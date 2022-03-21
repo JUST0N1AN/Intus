@@ -87,6 +87,7 @@ export default {
             setDoc(doc(db, "business", user.uid), {
               email: this.email,
               type: "bus",
+              req: [],
             })
               .then(() => {
                 console.log("reached");

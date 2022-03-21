@@ -11,6 +11,14 @@ const routes = [
     children: [{ path: "", component: () => import("pages/About.vue") }],
   },
   {
+    path: "/busoptions",
+    name: "BusinessOptions",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [
+      { path: "", component: () => import("pages/BusinessOptions.vue") },
+    ],
+  },
+  {
     path: "/map",
     name: "Map",
     component: () => import("layouts/MainLayout.vue"),

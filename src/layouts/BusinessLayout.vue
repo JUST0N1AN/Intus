@@ -58,6 +58,12 @@
 
           <q-item-section>Business Verification</q-item-section>
         </q-item>
+        <q-item clickable v-ripple to="/busoptions">
+          <q-item-section avatar>
+            <q-icon color="primary" name="las la-briefcase" />
+          </q-item-section>
+          <q-item-section>Business Options</q-item-section>
+        </q-item>
         <!-- <q-item clickable v-ripple v-if="loggedIn" to="upload">
           <q-item-section avatar>
             <q-icon color="primary" name="las la-file-upload" />
