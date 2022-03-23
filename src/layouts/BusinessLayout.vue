@@ -125,6 +125,7 @@ export default defineComponent({
         })
         .catch((error) => {
           // An error happened.
+          console.log(error);
         });
     },
   },
