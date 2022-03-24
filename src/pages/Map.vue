@@ -93,8 +93,8 @@ export default {
         }
       );
     },
-    markerClick(g) {
-      console.log(g.name);
+    markerClick() {
+      console.log("Marker Clicked");
       this.carousel = true;
       this.busName = g.name;
     },
@@ -137,11 +137,10 @@ export default {
     );
 
     this.map.on("click", (ev) => {
-      console.log(ev);
-      const marker = new mapboxgl.Marker()
-        .setLngLat([ev.lngLat.lng, ev.lngLat.lat])
-        .setPopup(popup)
-        .addTo(this.map);
+      // const marker = new mapboxgl.Marker()
+      //   .setLngLat([ev.lngLat.lng, ev.lngLat.lat])
+      //   .setPopup(popup)
+      //   .addTo(this.map);
     });
 
     var geolocate = new mapboxgl.GeolocateControl({
@@ -151,7 +150,8 @@ export default {
       positionOptions: {
         enableHighAccuracy: true,
       },
-      trackUserLocation: true,
+      trackUserLocation: false,
+      showAccuracyCircle: false,
     });
 
     this.map.addControl(geolocate, "top-left");
@@ -161,9 +161,38 @@ export default {
     });
     this.map.addControl(geocoder);
 
-    this.map.on("load", function () {
+    this.map.on("load", () => {
       geolocate.trigger();
+      const marker = new ClickableMarker()
+        .setLngLat([-61.45807772188593, 10.181898533036644])
+        .onClick(() => {
+          console.log(marker);
+          this.carousel = true;
+        })
+        .addTo(this.map);
     });
+
+    class ClickableMarker extends mapboxgl.Marker {
+      // new method onClick, sets _handleClick to a function you pass in
+      onClick(handleClick) {
+        this._handleClick = handleClick;
+        return this;
+      }
+
+      // the existing _onMapClick was there to trigger a popup
+      // but we are hijacking it to run a function we define
+      _onMapClick(e) {
+        const targetElement = e.originalEvent.target;
+        const element = this._element;
+
+        if (
+          this._handleClick &&
+          (targetElement === element || element.contains(targetElement))
+        ) {
+          this._handleClick();
+        }
+      }
+    }
 
     geolocate.on("geolocate", function (e) {
       var lon = e.coords.longitude;
