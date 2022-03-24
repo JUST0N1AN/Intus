@@ -2,35 +2,13 @@
   <div class="row justify-center">
     <div id="MAP">
       <h3 class="row justify-center">Map Demo</h3>
-      <div class="row justify-center q-mb-md">
-        <q-btn @click="findCurrLoc" color="primary">Recenter</q-btn>
-      </div>
-      <GoogleMap
-        api-key="AIzaSyDiiDgmEFzFbSWwazFPKNwWctFyPjGppVs"
-        style="
-          width: 500px;
-          height: 500px;
-          display: block;
-          margin-left: auto;
-          margin-right: auto;
-        "
-        :center="center"
-        :zoom="15"
-        @click="createMarker"
-      >
-        <Marker
-          :options="{ position: center, icon: homeimg }"
-          @click="markerClick"
-        />
-        <Marker
-          v-for="m in markers"
-          v-bind:key="m"
-          :options="{ position: m.position }"
-          @click="markerClick(m.position)"
-        />
-      </GoogleMap>
+      <div class="row justify-center q-mb-md"></div>
     </div>
   </div>
+  <div class="row">
+    <div class="col-6 offset-3" id="map" />
+  </div>
+
   <q-dialog v-model="carousel">
     <q-carousel
       transition-prev="slide-right"
@@ -64,15 +42,25 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import { GoogleMap, Marker } from "vue3-google-map";
+
+import "mapbox-gl/dist/mapbox-gl.css";
+
+import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+
+import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+
+var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
+
 let apiKey = "AIzaSyDiiDgmEFzFbSWwazFPKNwWctFyPjGppVs";
 let markerID = 0;
 
 export default {
-  components: { GoogleMap, Marker },
   data() {
     return {
+      accessToken:
+        "pk.eyJ1Ijoic2hhbmUxMjM0NTYwMSIsImEiOiJjbDE0N2R5ZWQyM3JqM2NxaDZxcmI5c2tlIn0.kwJri8wGDxWD3oIz5rGh8g",
       center: { lat: 0, lng: 0 },
       markers: [{}],
       homeimg:
@@ -81,18 +69,24 @@ export default {
       slide: ref(1),
       busName: null,
       busDes: null,
+      locSearch: null,
+      map: null,
     };
   },
   methods: {
     findCurrLoc() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          console.log(position.coords.latitude);
-          console.log(position.coords.longitude);
           this.center = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
+          console.log(this.center);
+          this.map.flyTo({ center: this.center });
+          // Create a new marker.
+          const marker = new mapboxgl.Marker()
+            .setLngLat([30.5, 50.5])
+            .addTo(this.map);
         },
         (error) => {
           console.log(error.message);
@@ -108,24 +102,10 @@ export default {
       console.log(event.latLng.lat());
       console.log(event.latLng.lng());
       //   console.log("Marker Created: " + markerID);
-      this.markers.push({
-        position: {
-          lat: event.latLng.lat(),
-          lng: event.latLng.lng(),
-          id: markerID++,
-          name: "Test Business ",
-          des: "Description of Business",
-        },
-      });
     },
-    deleteMarker(mark) {
-      //   console.log(this.markers[1].position.id);
-      for (let i = 0; i < this.markers.length; i++) {
-        if (this.markers[i + 1].position.id == mark.id) {
-          this.markers.splice(i + 1, 1);
-          break;
-        }
-      }
+    deleteMarker(mark) {},
+    searchLocation() {
+      console.log(this.locSearch);
     },
   },
   beforeMount() {
@@ -142,8 +122,61 @@ export default {
         des: "Description of Business",
       },
     });
+    mapboxgl.accessToken = this.accessToken;
+    mapboxgl.accessToken =
+      "pk.eyJ1Ijoic2hhbmUxMjM0NTYwMSIsImEiOiJjbDE0N2R5ZWQyM3JqM2NxaDZxcmI5c2tlIn0.kwJri8wGDxWD3oIz5rGh8g";
+    this.map = new mapboxgl.Map({
+      container: "map",
+      style: "mapbox://styles/mapbox/streets-v11",
+      center: [-61, 10],
+      zoom: 14,
+    });
+
+    var popup = new mapboxgl.Popup({ offset: 25 }).setText(
+      "Construction on the Washington Monument began in 1848."
+    );
+
+    this.map.on("click", (ev) => {
+      console.log(ev);
+      const marker = new mapboxgl.Marker()
+        .setLngLat([ev.lngLat.lng, ev.lngLat.lat])
+        .setPopup(popup)
+        .addTo(this.map);
+    });
+
+    var geolocate = new mapboxgl.GeolocateControl({
+      fitBoundsOptions: {
+        zoom: 14,
+      },
+      positionOptions: {
+        enableHighAccuracy: true,
+      },
+      trackUserLocation: true,
+    });
+
+    this.map.addControl(geolocate, "top-left");
+    const geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapboxgl: mapboxgl,
+    });
+    this.map.addControl(geocoder);
+
+    this.map.on("load", function () {
+      geolocate.trigger();
+    });
+
+    geolocate.on("geolocate", function (e) {
+      var lon = e.coords.longitude;
+      var lat = e.coords.latitude;
+      var position = [lon, lat];
+      console.log(position);
+    });
   },
 };
 </script>
 
-<style></style>
+<style>
+#map {
+  height: 100vh;
+}
+</style>
