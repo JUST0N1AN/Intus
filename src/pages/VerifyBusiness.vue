@@ -1,7 +1,12 @@
 <template>
   <h3 class="row justify-center">Business Verification</h3>
 
-  <div class="row" v-if="!exists">
+  <div v-if="!this.approved || this.exist">
+    <h3>Your Application Is Pending Approval</h3>
+    <p>You can edit your application and resubmit.</p>
+  </div>
+
+  <div class="row" v-if="!this.exists || !this.approved">
     <div class="col-6 offset-3">
       <q-form>
         <q-input
@@ -79,23 +84,20 @@
           </template>
         </q-file>
       </q-form>
-      <div class="row justify-center q-pt-md">
-        <q-btn
-          @click="regBus()"
-          type="submit"
-          label="submit"
-          color="primary"
-        ></q-btn>
+      <div class="row justify-center q-pt-md" v-if="!this.exists">
+        <q-btn @click="regBus()" type="submit" label="submit" color="primary"></q-btn>
+      </div>
+
+      <div class="row justify-center q-pt-md" v-if="this.exists">
+        <q-btn @click="updateRegBuss()" type="submit" label="resubmit" color="primary"></q-btn>
       </div>
     </div>
   </div>
-  <h3>Your Application Is Pending Approval</h3>
+
   <div class="q-pa-md" v-if="this.approved">
     <h3>Your application has been approved</h3>
     <q-icon class="las la-check-circle" size="xl" color="green"></q-icon>
   </div>
-
-  <p>You can edit your document and resubmit.</p>
 </template>
 
 <script>
@@ -107,6 +109,7 @@ import {
   doc,
   updateDoc,
   getDocs,
+  serverTimestamp
 } from "firebase/firestore";
 import {
   getStorage,
@@ -127,6 +130,7 @@ export default {
         contactNumber: null,
         file: null,
         approved: false,
+        date: serverTimestamp(),
       },
       auth: null,
       user: null,
@@ -145,23 +149,16 @@ export default {
   },
   methods: {
     regBus() {
-      // const auth = getAuth();
-      // const user = auth.currentUser;
+      const auth = getAuth();
+      const user = auth.currentUser;
       const storage = getStorage();
       const storageRef = ref(storage, this.formData.file[0].name);
-      var today = new Date();
-      var date =
-        today.getDate() +
-        "/" +
-        (today.getMonth() + 1) +
-        "/" +
-        today.getFullYear();
 
-      if (this.user) {
+      if (user) {
         uploadBytes(storageRef, this.formData.file[0]).then((snapshot) => {
           getDownloadURL(storageRef).then((url) => {
             const docRef = addDoc(
-              collection(db, "business", this.user.uid, "Business Form"),
+              collection(db, "business", user.uid, "Business Form"),
               {
                 businessName: this.formData.name,
                 registrationNumber: this.formData.regNumber,
@@ -171,7 +168,7 @@ export default {
                 file: this.formData.file[0].name,
                 fileUrl: url,
                 approved: this.formData.approved,
-                date: String(this.today),
+                date: this.formData.date,
               }
             );
           });
@@ -183,32 +180,74 @@ export default {
         alert("You must be signed in");
       }
     },
-    async checkApplicationExistence() {
-      // const auth = getAuth();
-      // const user = auth.currentUser;
-      const docRef = collection(db, "business", this.user.uid, "Business Form");
-      const docSnap = await getDocs(docRef);
-
-      if (docSnap.size > 0) {
-        this.exists = true;
-        console.log("Exists");
-        docSnap.forEach((doc) => {
-          this.documents.push(doc);
+  async updateRegBuss() {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      const storage = getStorage();
+      const storageRef = ref(storage, this.formData.file[0].name);
+      const docRef = collection(db, "business", user.uid, "Business Form");
+      if (user) {
+        uploadBytes(storageRef, this.formData.file[0]).then((snapshot) => {
+          getDownloadURL(storageRef).then((url) => {
+              setDoc(docRef, {
+              businessName: this.formData.name,
+              registrationNumber: this.formData.regNumber,
+              businessType: this.formData.type,
+              address: this.formData.address,
+              contactNumber: this.formData.contactNumber,
+              file: this.formData.file[0].name,
+              fileUrl: url,
+              approved: this.formData.approved,
+              date: this.formData.date,
+            });
+          });
         });
-        if (this.documents[0].data().approved) {
-          this.approved = true;
-        }
-        //console.log(this.documents[0].data().approved);
+        alert(
+          "Application Submitted and is Pending Approval " + this.formData.name
+        );
       } else {
-        this.exists = false;
-        console.log("No such document!");
+        alert("You must be signed in");
       }
     },
-    editForm() {},
-  },
-  created() {
-    this.auth = getAuth();
-    this.user = this.auth.currentUser;
+    async checkApplicationExistence() {
+      const auth = getAuth();
+      const user = auth.currentUser;;
+      console.log(user);
+      if (user) {
+        const docRef = collection(db, "business", user.uid, "Business Form");
+        const docSnap = await getDocs(docRef);
+
+        if (docSnap.size > 0) {
+          this.exists = true;
+          console.log("Exists");
+          docSnap.forEach((doc) => {
+            this.documents.push(doc);
+          });
+          if (this.documents[0].data().approved) {
+            this.approved = true;
+            console.log("Approval: ", this.approved);
+            console.log("Exist: ", this.exists);
+
+          }
+          else {
+            this.formData.name = this.documents[0].data().businessName;
+            this.formData.regNumber = this.documents[0].data().registrationNumber;
+            this.formData.type = this.documents[0].data().businessType;
+            this.formData.address = this.documents[0].data().address;
+            this.formData.contactNumber = this.documents[0].data().contactNumber;
+            this.formData.date = this.documents[0].data().date;
+          }
+
+        } else {
+          this.exists = false;
+          console.log("No such document!");
+        }
+      }
+      else {
+        alert("Must be signed in");
+      }
+
+    },
   },
   mounted() {
     this.checkApplicationExistence();
