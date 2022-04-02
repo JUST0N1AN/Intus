@@ -70,7 +70,20 @@
 
         <q-tab-panel name="selectloc">
           <div class="text-h6 row justify-center">Select Location</div>
-          Map and location Selection will go HERE.
+          <div v-if="this.positions != []">
+            <div>These are your current positions</div>
+          </div>
+          <div v-else>You currently have no locations on the map.</div>
+
+          <q-btn class="q-ma-md" @click="loadMap" color="primary"
+            >Display Map</q-btn
+          >
+
+          <div v-if="instructions">
+            Find the location you would like to pin and click it on the map
+          </div>
+
+          <div id="map"></div>
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -90,6 +103,14 @@ import {
 import db from "../boot/firebase.js";
 import { ref } from "vue";
 
+import "mapbox-gl/dist/mapbox-gl.css";
+
+import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+
+import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+
+var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
+
 export default {
   setup() {
     return {
@@ -104,6 +125,21 @@ export default {
   data() {
     return {
       req: [],
+      positions: [],
+      mapModal: false,
+      accessToken:
+        "pk.eyJ1Ijoic2hhbmUxMjM0NTYwMSIsImEiOiJjbDE0N2R5ZWQyM3JqM2NxaDZxcmI5c2tlIn0.kwJri8wGDxWD3oIz5rGh8g",
+      center: { lat: 0, lng: 0 },
+      markers: [{}],
+      homeimg:
+        "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
+      carousel: false,
+      slide: ref(1),
+      busName: null,
+      busDes: null,
+      locSearch: null,
+      map: null,
+      instructions: false,
     };
   },
   methods: {
@@ -112,8 +148,7 @@ export default {
       const user = auth.currentUser;
       const docRef = doc(db, "business", user.uid);
       const docSnap = await getDoc(docRef);
-      if (docSnap.data().req.length <= 0) {
-      } else {
+      if (docSnap.data().req) {
         this.govID = ref(docSnap.data().req[0]);
         this.vaxRec = ref(docSnap.data().req[1]);
         this.covTest = ref(docSnap.data().req[2]);
@@ -133,11 +168,105 @@ export default {
       });
       alert("Requirements Updated");
     },
+    async getPositions() {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      const docRef = doc(db, "business", user.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.data().locations) {
+        docSnap.data().locations.forEach((loc) => {
+          this.positions.push(loc);
+        });
+      }
+    },
+    async updatePositions() {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      // this.req = [];
+      // this.req.push(this.govID);
+      // this.req.push(this.vaxRec);
+      // this.req.push(this.covTest);
+      // this.req.push(this.age);
+
+      const docRef = doc(db, "business", user.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.data().locations) {
+      }
+      updateDoc(doc(db, "business", user.uid), {
+        locations: this.positions,
+      });
+      alert("Requirements Updated");
+    },
+
+    // Map methods
+    loadMap() {
+      this.instructions = true;
+      mapboxgl.accessToken =
+        "pk.eyJ1Ijoic2hhbmUxMjM0NTYwMSIsImEiOiJjbDE0N2R5ZWQyM3JqM2NxaDZxcmI5c2tlIn0.kwJri8wGDxWD3oIz5rGh8g";
+      this.map = new mapboxgl.Map({
+        container: "map",
+        style: "mapbox://styles/mapbox/streets-v11",
+        center: [-61, 10],
+        zoom: 14,
+      });
+      var geolocate = new mapboxgl.GeolocateControl({
+        fitBoundsOptions: {
+          zoom: 14,
+        },
+        positionOptions: {
+          enableHighAccuracy: true,
+        },
+        trackUserLocation: false,
+        showAccuracyCircle: false,
+      });
+
+      this.map.addControl(geolocate, "top-left");
+      const geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl,
+      });
+      this.map.addControl(geocoder);
+
+      this.map.on("load", () => {
+        geolocate.trigger();
+      });
+
+      this.map.on("click", (ev) => {
+        console.log(ev);
+      });
+
+      this.findCurrLoc();
+    },
+    findCurrLoc() {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.center = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          console.log(this.center);
+          this.map.flyTo({ center: this.center });
+          // Create a new marker.
+          const marker = new mapboxgl.Marker()
+            .setLngLat([30.5, 50.5])
+            .addTo(this.map);
+        },
+        (error) => {
+          console.log(error.message);
+        }
+      );
+    },
   },
+
   mounted() {
     this.loadReqs();
+    this.getPositions();
   },
 };
 </script>
 
-<style></style>
+<style>
+#map {
+  height: 50vh;
+}
+</style>

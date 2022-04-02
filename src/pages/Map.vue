@@ -53,7 +53,6 @@ import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
 var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
-let apiKey = "AIzaSyDiiDgmEFzFbSWwazFPKNwWctFyPjGppVs";
 let markerID = 0;
 
 export default {
@@ -131,10 +130,6 @@ export default {
       center: [-61, 10],
       zoom: 14,
     });
-
-    var popup = new mapboxgl.Popup({ offset: 25 }).setText(
-      "Construction on the Washington Monument began in 1848."
-    );
 
     this.map.on("click", (ev) => {
       // const marker = new mapboxgl.Marker()
