@@ -1,7 +1,7 @@
 <template>
   <h3 class="row justify-center">Business Verification</h3>
 
-  <div v-if="!this.approved && this.exist">
+  <div v-if="!this.approved && this.exists">
     <h3>Your Application Is Pending Approval</h3>
     <p>You can edit your application and resubmit.</p>
   </div>
@@ -85,11 +85,24 @@
         </q-file>
       </q-form>
       <div class="row justify-center q-pt-md" v-if="!this.exists">
-        <q-btn @click="regBus(); refresh();" type="submit" label="submit" color="primary"></q-btn>
+        <q-btn
+          @click="
+            regBus();
+            refresh();
+          "
+          type="submit"
+          label="submit"
+          color="primary"
+        ></q-btn>
       </div>
 
       <div class="row justify-center q-pt-md" v-if="this.exists">
-        <q-btn @click="updateRegBuss()" type="submit" label="resubmit" color="primary"></q-btn>
+        <q-btn
+          @click="updateRegBuss()"
+          type="submit"
+          label="resubmit"
+          color="primary"
+        ></q-btn>
       </div>
     </div>
   </div>
@@ -109,7 +122,7 @@ import {
   doc,
   updateDoc,
   getDocs,
-  serverTimestamp
+  serverTimestamp,
 } from "firebase/firestore";
 import {
   getStorage,
@@ -176,13 +189,12 @@ export default {
         alert(
           "Application Submitted and is Pending Approval " + this.formData.name
         );
-
       } else {
         alert("You must be signed in");
       }
     },
-    async refresh(){
-      const delay = ms => new Promise(res => setTimeout(res, ms));
+    async refresh() {
+      const delay = (ms) => new Promise((res) => setTimeout(res, ms));
       await delay(10000);
       window.location.reload();
       this.checkApplicationExistence();
@@ -214,7 +226,8 @@ export default {
           businessName: this.formData.name,
         });
         alert(
-          "Application Resubmitted and is Pending Approval " + this.formData.name
+          "Application Resubmitted and is Pending Approval " +
+            this.formData.name
         );
       } else {
         alert("You must be signed in");
@@ -238,32 +251,28 @@ export default {
             this.approved = true;
             console.log("Approval: ", this.approved);
             console.log("Exist: ", this.exists);
-
-          }
-          else {
+          } else {
             this.formData.name = this.documents[0].data().businessName;
-            this.formData.regNumber = this.documents[0].data().registrationNumber;
+            this.formData.regNumber =
+              this.documents[0].data().registrationNumber;
             this.formData.type = this.documents[0].data().businessType;
             this.formData.address = this.documents[0].data().address;
-            this.formData.contactNumber = this.documents[0].data().contactNumber;
+            this.formData.contactNumber =
+              this.documents[0].data().contactNumber;
             this.formData.date = this.documents[0].data().date;
           }
-
         } else {
           this.exists = false;
           console.log("No such document!");
         }
-      }
-      else {
+      } else {
         alert("Must be signed in");
       }
-
     },
   },
   mounted() {
     this.checkApplicationExistence();
   },
-
 };
 </script>
 <style>
