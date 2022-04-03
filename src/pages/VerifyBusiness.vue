@@ -1,7 +1,7 @@
 <template>
   <h3 class="row justify-center">Business Verification</h3>
 
-  <div v-if="!this.approved || this.exist">
+  <div v-if="!this.approved && this.exist">
     <h3>Your Application Is Pending Approval</h3>
     <p>You can edit your application and resubmit.</p>
   </div>
@@ -85,7 +85,7 @@
         </q-file>
       </q-form>
       <div class="row justify-center q-pt-md" v-if="!this.exists">
-        <q-btn @click="regBus()" type="submit" label="submit" color="primary"></q-btn>
+        <q-btn @click="regBus(); refresh();" type="submit" label="submit" color="primary"></q-btn>
       </div>
 
       <div class="row justify-center q-pt-md" v-if="this.exists">
@@ -176,11 +176,19 @@ export default {
         alert(
           "Application Submitted and is Pending Approval " + this.formData.name
         );
+
       } else {
         alert("You must be signed in");
       }
     },
-  async updateRegBuss() {
+    async refresh(){
+      const delay = ms => new Promise(res => setTimeout(res, ms));
+      await delay(10000);
+      window.location.reload();
+      this.checkApplicationExistence();
+    },
+
+    async updateRegBuss() {
       const auth = getAuth();
       const user = auth.currentUser;
       const storage = getStorage();
@@ -188,8 +196,8 @@ export default {
       const docRef = collection(db, "business", user.uid, "Business Form");
       if (user) {
         uploadBytes(storageRef, this.formData.file[0]).then((snapshot) => {
-          getDownloadURL(storageRef).then((url) => {
-              setDoc(docRef, {
+          getDownloadURL(storageRef).then(async (url) => {
+            await setDoc(docRef, {
               businessName: this.formData.name,
               registrationNumber: this.formData.regNumber,
               businessType: this.formData.type,
@@ -202,8 +210,11 @@ export default {
             });
           });
         });
+        await updateDoc(docRef2, {
+          businessName: this.formData.name,
+        });
         alert(
-          "Application Submitted and is Pending Approval " + this.formData.name
+          "Application Resubmitted and is Pending Approval " + this.formData.name
         );
       } else {
         alert("You must be signed in");
@@ -211,7 +222,7 @@ export default {
     },
     async checkApplicationExistence() {
       const auth = getAuth();
-      const user = auth.currentUser;;
+      const user = auth.currentUser;
       console.log(user);
       if (user) {
         const docRef = collection(db, "business", user.uid, "Business Form");
@@ -252,6 +263,7 @@ export default {
   mounted() {
     this.checkApplicationExistence();
   },
+
 };
 </script>
 <style>
