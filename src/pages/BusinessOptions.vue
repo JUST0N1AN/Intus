@@ -70,8 +70,9 @@
 
         <q-tab-panel name="selectloc">
           <div class="text-h6 row justify-center">Select Location</div>
-          <div v-if="this.positions != []">
+          <div v-if="this.positions.length > 0">
             <div>These are your current positions</div>
+            <div v-for="x in this.positions" :key="x">{{ x }}</div>
           </div>
           <div v-else>You currently have no locations on the map.</div>
 
@@ -84,6 +85,34 @@
           </div>
 
           <div id="map"></div>
+
+          <q-dialog v-model="confirm" persistent>
+            <q-card>
+              <q-card-section>
+                <span class="q-ml-sm row items-center"
+                  >Add this location to the map?</span
+                >
+
+                <span class="q-ml-sm row items-center"
+                  >Lng = {{ this.newPositions.lng }}</span
+                >
+                <span class="q-ml-sm row items-center"
+                  >Lat = {{ this.newPositions.lat }}</span
+                >
+              </q-card-section>
+
+              <q-card-actions align="right">
+                <q-btn flat label="Cancel" color="primary" v-close-popup />
+                <q-btn
+                  flat
+                  label="Add Location"
+                  color="primary"
+                  v-close-popup
+                  @click="updatePositions"
+                />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -140,6 +169,8 @@ export default {
       locSearch: null,
       map: null,
       instructions: false,
+      confirm: false,
+      newPositions: null,
     };
   },
   methods: {
@@ -174,27 +205,24 @@ export default {
       const docRef = doc(db, "business", user.uid);
       const docSnap = await getDoc(docRef);
       if (docSnap.data().locations) {
-        docSnap.data().locations.forEach((loc) => {
-          this.positions.push(loc);
-        });
+        this.positions.push(docSnap.data().locations);
       }
     },
     async updatePositions() {
       const auth = getAuth();
       const user = auth.currentUser;
-      // this.req = [];
-      // this.req.push(this.govID);
-      // this.req.push(this.vaxRec);
-      // this.req.push(this.covTest);
-      // this.req.push(this.age);
-
       const docRef = doc(db, "business", user.uid);
       const docSnap = await getDoc(docRef);
-      if (docSnap.data().locations) {
-      }
-      updateDoc(doc(db, "business", user.uid), {
-        locations: this.positions,
+      let tempPos;
+      console.log(this.newPositions);
+      this.positions.push();
+      await updateDoc(docRef, {
+        locations: {
+          lat: this.newPositions.lat,
+          lng: this.newPositions.lng,
+        },
       });
+      this.getPositions();
       alert("Requirements Updated");
     },
 
@@ -233,6 +261,8 @@ export default {
 
       this.map.on("click", (ev) => {
         console.log(ev);
+        this.newPositions = ev.lngLat;
+        this.confirm = true;
       });
 
       this.findCurrLoc();
