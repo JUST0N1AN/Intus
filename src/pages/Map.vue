@@ -130,7 +130,6 @@ export default {
     },
     goToLocation(x) {
       const newLoc = { lat: x.locations.lat, lng: x.locations.lng };
-      console.log(newLoc);
       this.map.flyTo({ center: newLoc });
     },
   },
