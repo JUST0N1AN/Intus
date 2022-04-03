@@ -85,11 +85,21 @@
         </q-file>
       </q-form>
       <div class="row justify-center q-pt-md" v-if="!this.exists">
-        <q-btn @click="regBus()" type="submit" label="submit" color="primary"></q-btn>
+        <q-btn
+          @click="regBus()"
+          type="submit"
+          label="submit"
+          color="primary"
+        ></q-btn>
       </div>
 
       <div class="row justify-center q-pt-md" v-if="this.exists">
-        <q-btn @click="updateRegBuss()" type="submit" label="resubmit" color="primary"></q-btn>
+        <q-btn
+          @click="updateRegBuss()"
+          type="submit"
+          label="resubmit"
+          color="primary"
+        ></q-btn>
       </div>
     </div>
   </div>
@@ -208,12 +218,13 @@ export default {
           });
         });
         alert(
-          "Application Resubmitted and is Pending Approval " + this.formData.name
+          "Application Resubmitted and is Pending Approval " +
+            this.formData.name
         );
+        this.$forceUpdate();
       } else {
         alert("You must be signed in");
       }
-
     },
     async checkApplicationExistence() {
       const auth = getAuth();
@@ -232,10 +243,12 @@ export default {
             console.log("Exist: ", this.exists);
           } else {
             this.formData.name = docSnap.data().businessInfo.businessName;
-            this.formData.regNumber = docSnap.data().businessInfo.registrationNumber;
+            this.formData.regNumber =
+              docSnap.data().businessInfo.registrationNumber;
             this.formData.type = docSnap.data().businessInfo.businessType;
             this.formData.address = docSnap.data().businessInfo.address;
-            this.formData.contactNumber = docSnap.data().businessInfo.contactNumber;
+            this.formData.contactNumber =
+              docSnap.data().businessInfo.contactNumber;
             this.formData.date = docSnap.data().date;
           }
         } else {
