@@ -89,12 +89,7 @@
       </div>
 
       <div class="row justify-center q-pt-md" v-if="this.exists">
-        <q-btn
-          @click="updateRegBuss()"
-          type="submit"
-          label="resubmit"
-          color="primary"
-        ></q-btn>
+        <q-btn @click="updateRegBuss()" type="submit" label="resubmit" color="primary"></q-btn>
       </div>
     </div>
   </div>
@@ -113,7 +108,7 @@ import {
   setDoc,
   doc,
   updateDoc,
-  getDocs,
+  getDoc,
   serverTimestamp,
 } from "firebase/firestore";
 import {
@@ -158,13 +153,13 @@ export default {
       const user = auth.currentUser;
       const storage = getStorage();
       const storageRef = ref(storage, this.formData.file[0].name);
+      const docRef = doc(db, "business", user.uid);
 
       if (user) {
         uploadBytes(storageRef, this.formData.file[0]).then((snapshot) => {
-          getDownloadURL(storageRef).then((url) => {
-            const docRef = addDoc(
-              collection(db, "business", user.uid, "Business Form"),
-              {
+          getDownloadURL(storageRef).then(async (url) => {
+            await updateDoc(docRef, {
+              businessInfo: {
                 businessName: this.formData.name,
                 registrationNumber: this.formData.regNumber,
                 businessType: this.formData.type,
@@ -174,8 +169,8 @@ export default {
                 fileUrl: url,
                 approved: this.formData.approved,
                 date: this.formData.date,
-              }
-            );
+              },
+            });
           });
         });
         alert(
@@ -186,66 +181,62 @@ export default {
       }
     },
 
-    async updateRegBuss() {
+    updateRegBuss() {
       const auth = getAuth();
       const user = auth.currentUser;
       const storage = getStorage();
       const storageRef = ref(storage, this.formData.file[0].name);
-      const docRef = collection(db, "business", user.uid, "Business Form");
+      const docRef = doc(db, "business", user.uid);
+      const timeRef = serverTimestamp();
+
       if (user) {
         uploadBytes(storageRef, this.formData.file[0]).then((snapshot) => {
           getDownloadURL(storageRef).then(async (url) => {
-            await setDoc(docRef, {
-              businessName: this.formData.name,
-              registrationNumber: this.formData.regNumber,
-              businessType: this.formData.type,
-              address: this.formData.address,
-              contactNumber: this.formData.contactNumber,
-              file: this.formData.file[0].name,
-              fileUrl: url,
-              approved: this.formData.approved,
-              date: this.formData.date,
+            await updateDoc(docRef, {
+              businessInfo: {
+                businessName: this.formData.name,
+                registrationNumber: this.formData.regNumber,
+                businessType: this.formData.type,
+                address: this.formData.address,
+                contactNumber: this.formData.contactNumber,
+                file: this.formData.file[0].name,
+                fileUrl: url,
+                approved: this.formData.approved,
+                date: timeRef,
+              },
             });
           });
         });
-        await updateDoc(docRef2, {
-          businessName: this.formData.name,
-        });
         alert(
-          "Application Resubmitted and is Pending Approval " +
-            this.formData.name
+          "Application Resubmitted and is Pending Approval " + this.formData.name
         );
       } else {
         alert("You must be signed in");
       }
+
     },
     async checkApplicationExistence() {
       const auth = getAuth();
       const user = auth.currentUser;
       console.log(user);
+      const docRef = doc(db, "business", user.uid);
+      const docSnap = await getDoc(docRef);
+      console.log("Docs: ", docSnap.data());
       if (user) {
-        const docRef = collection(db, "business", user.uid, "Business Form");
-        const docSnap = await getDocs(docRef);
-
-        if (docSnap.size > 0) {
+        if (docSnap.data().businessInfo != null) {
           this.exists = true;
           console.log("Exists");
-          docSnap.forEach((doc) => {
-            this.documents.push(doc);
-          });
-          if (this.documents[0].data().approved) {
+          if (docSnap.data().businessInfo.approved) {
             this.approved = true;
             console.log("Approval: ", this.approved);
             console.log("Exist: ", this.exists);
           } else {
-            this.formData.name = this.documents[0].data().businessName;
-            this.formData.regNumber =
-              this.documents[0].data().registrationNumber;
-            this.formData.type = this.documents[0].data().businessType;
-            this.formData.address = this.documents[0].data().address;
-            this.formData.contactNumber =
-              this.documents[0].data().contactNumber;
-            this.formData.date = this.documents[0].data().date;
+            this.formData.name = docSnap.data().businessInfo.businessName;
+            this.formData.regNumber = docSnap.data().businessInfo.registrationNumber;
+            this.formData.type = docSnap.data().businessInfo.businessType;
+            this.formData.address = docSnap.data().businessInfo.address;
+            this.formData.contactNumber = docSnap.data().businessInfo.contactNumber;
+            this.formData.date = docSnap.data().date;
           }
         } else {
           this.exists = false;
