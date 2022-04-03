@@ -129,6 +129,7 @@ export default defineComponent({
           // Sign-out successful.
           console.log("Logged out");
           this.loggedIn = false;
+          this.admin = false;
           this.$router.push({ path: "/" });
         })
         .catch((error) => {
