@@ -22,6 +22,16 @@
           <q-input
             square
             filled
+            v-model="uname"
+            label="Full Name"
+            type="text"
+            :rules="['Field is required']"
+            id="uname"
+            required
+          />
+          <q-input
+            square
+            filled
             v-model="password"
             :type="isPwd ? 'password' : 'text'"
             hint="Password"
@@ -73,6 +83,7 @@ export default {
       isPwd: ref(true),
       isPwd2: ref(true),
       secondPass: null,
+      uname: null,
     };
   },
   methods: {
@@ -89,6 +100,7 @@ export default {
             console.log(user.uid);
             setDoc(doc(db, "users", user.uid), {
               email: this.email,
+              name: this.uname,
               type: "user",
             })
               .then(() => {

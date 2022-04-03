@@ -8,6 +8,16 @@
             <q-input
               square
               filled
+              v-model="bname"
+              label="Business Name"
+              type="text"
+              :rules="['Field is required']"
+              id="bname"
+              required
+            />
+            <q-input
+              square
+              filled
               v-model="email"
               label="Email"
               type="email"
@@ -32,6 +42,7 @@
             </q-input>
 
             <q-input
+              style="q-pt-md"
               square
               filled
               v-model="secondPass"
@@ -46,6 +57,17 @@
                 />
               </template>
             </q-input>
+            <q-input
+              class="q-pt-md"
+              square
+              filled
+              v-model="desc"
+              label="Business Description"
+              type="textarea"
+              :rules="['Field is required']"
+              id="desc"
+              required
+            />
           </q-form>
           <p class="row justify-center">
             <q-btn @click="registerUser" color="primary">Submit</q-btn>
@@ -65,11 +87,13 @@ import { ref } from "vue";
 export default {
   data() {
     return {
+      bname: null,
       email: null,
       password: null,
       isPwd: ref(true),
       isPwd2: ref(true),
       secondPass: null,
+      desc: null,
     };
   },
   methods: {
@@ -85,7 +109,9 @@ export default {
             const user = userCredential.user;
             console.log(user.uid);
             setDoc(doc(db, "business", user.uid), {
+              name: this.bname,
               email: this.email,
+              desc: this.desc,
               type: "bus",
               req: [],
             })

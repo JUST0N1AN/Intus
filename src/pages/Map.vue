@@ -27,7 +27,7 @@
         <q-icon name="las la-igloo" color="primary" size="56px" />
         <div class="q-mt-md text-center">
           <div class="text-h6">{{ busName }}</div>
-          Relevent Business Information and Description would be here
+          {{ busDes }}
         </div>
       </q-carousel-slide>
       <q-carousel-slide :name="2" class="column no-wrap flex-center">
@@ -45,6 +45,11 @@
 import { defineComponent, onMounted, ref } from "vue";
 import { GoogleMap, Marker } from "vue3-google-map";
 
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { addDoc, setDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import db from "../boot/firebase.js";
+
 import "mapbox-gl/dist/mapbox-gl.css";
 
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
@@ -61,7 +66,7 @@ export default {
       accessToken:
         "pk.eyJ1Ijoic2hhbmUxMjM0NTYwMSIsImEiOiJjbDE0N2R5ZWQyM3JqM2NxaDZxcmI5c2tlIn0.kwJri8wGDxWD3oIz5rGh8g",
       center: { lat: 0, lng: 0 },
-      markers: [{}],
+      markers: [],
       homeimg:
         "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
       carousel: false,
@@ -80,12 +85,8 @@ export default {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          console.log(this.center);
+
           this.map.flyTo({ center: this.center });
-          // Create a new marker.
-          const marker = new mapboxgl.Marker()
-            .setLngLat([30.5, 50.5])
-            .addTo(this.map);
         },
         (error) => {
           console.log(error.message);
@@ -97,12 +98,17 @@ export default {
       this.carousel = true;
       this.busName = g.name;
     },
-    createMarker(event) {
-      console.log(event.latLng.lat());
-      console.log(event.latLng.lng());
-      //   console.log("Marker Created: " + markerID);
+
+    async getMarkers() {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      const querySnapshot = await getDocs(collection(db, "business"));
+      querySnapshot.forEach((doc) => {
+        if (doc.data().locations) {
+          this.markers.push(doc.data());
+        }
+      });
     },
-    deleteMarker(mark) {},
     searchLocation() {
       console.log(this.locSearch);
     },
@@ -112,15 +118,7 @@ export default {
   },
 
   mounted() {
-    this.markers.push({
-      position: {
-        lat: 10.18054893099064,
-        lng: -61.46154993919575,
-        id: markerID++,
-        name: "Test Business ",
-        des: "Description of Business",
-      },
-    });
+    this.getMarkers();
     mapboxgl.accessToken = this.accessToken;
     mapboxgl.accessToken =
       "pk.eyJ1Ijoic2hhbmUxMjM0NTYwMSIsImEiOiJjbDE0N2R5ZWQyM3JqM2NxaDZxcmI5c2tlIn0.kwJri8wGDxWD3oIz5rGh8g";
@@ -158,13 +156,16 @@ export default {
 
     this.map.on("load", () => {
       geolocate.trigger();
-      const marker = new ClickableMarker()
-        .setLngLat([-61.45807772188593, 10.181898533036644])
-        .onClick(() => {
-          console.log(marker);
-          this.carousel = true;
-        })
-        .addTo(this.map);
+      this.markers.forEach((x) => {
+        const marker = new ClickableMarker()
+          .setLngLat([x.locations.lng, x.locations.lat])
+          .onClick(() => {
+            this.carousel = true;
+            this.busName = x.name;
+            this.busDes = x.desc;
+          })
+          .addTo(this.map);
+      });
     });
 
     class ClickableMarker extends mapboxgl.Marker {
@@ -193,7 +194,6 @@ export default {
       var lon = e.coords.longitude;
       var lat = e.coords.latitude;
       var position = [lon, lat];
-      console.log(position);
     });
   },
 };
