@@ -85,15 +85,7 @@
         </q-file>
       </q-form>
       <div class="row justify-center q-pt-md" v-if="!this.exists">
-        <q-btn
-          @click="
-            regBus();
-            refresh();
-          "
-          type="submit"
-          label="submit"
-          color="primary"
-        ></q-btn>
+        <q-btn @click="regBus()" type="submit" label="submit" color="primary"></q-btn>
       </div>
 
       <div class="row justify-center q-pt-md" v-if="this.exists">
@@ -192,12 +184,6 @@ export default {
       } else {
         alert("You must be signed in");
       }
-    },
-    async refresh() {
-      const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-      await delay(10000);
-      window.location.reload();
-      this.checkApplicationExistence();
     },
 
     async updateRegBuss() {
