@@ -2,7 +2,23 @@
   <div class="row justify-center">
     <div id="MAP">
       <h3 class="row justify-center">Map Demo</h3>
-      <div class="row justify-center q-mb-md"></div>
+      <div class="row justify-center q-mb-md">
+        <q-list bordered separator>
+          <q-item v-ripple v-for="x in this.markers" :key="x">
+            <q-item-section> {{ x.name }}</q-item-section>
+            <q-item-section avatar>
+              <q-avatar
+                clickable
+                rounded
+                color="primary"
+                text-color="white"
+                icon="las la-map-marker"
+                @click="goToLocation(x)"
+              />
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -111,6 +127,11 @@ export default {
     },
     searchLocation() {
       console.log(this.locSearch);
+    },
+    goToLocation(x) {
+      const newLoc = { lat: x.locations.lat, lng: x.locations.lng };
+      console.log(newLoc);
+      this.map.flyTo({ center: newLoc });
     },
   },
   beforeMount() {
