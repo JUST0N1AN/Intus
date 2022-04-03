@@ -8,7 +8,7 @@
 
   <div class="row" v-if="!this.exists || !this.approved">
     <div class="col-6 offset-3">
-      <q-form>
+      <q-form  ref="form">
         <q-input
           square
           filled
@@ -85,11 +85,11 @@
         </q-file>
       </q-form>
       <div class="row justify-center q-pt-md" v-if="!this.exists">
-        <q-btn @click="regBus()" type="submit" label="submit" color="primary"></q-btn>
+        <q-btn @click="regBus(); " type="submit" label="submit" color="primary"></q-btn>
       </div>
 
       <div class="row justify-center q-pt-md" v-if="this.exists">
-        <q-btn @click="updateRegBuss()" type="submit" label="resubmit" color="primary"></q-btn>
+        <q-btn @click="updateRegBuss(); " type="submit" label="resubmit" color="primary"></q-btn>
       </div>
     </div>
   </div>
@@ -119,6 +119,8 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import db from "../boot/firebase.js";
+
+//init("ZPrr5joeG93gWzGKy");
 export default {
   data() {
     return {
@@ -213,7 +215,6 @@ export default {
       } else {
         alert("You must be signed in");
       }
-
     },
     async checkApplicationExistence() {
       const auth = getAuth();
