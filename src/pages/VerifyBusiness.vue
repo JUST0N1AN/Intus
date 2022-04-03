@@ -210,8 +210,10 @@ export default {
           });
         });
         alert(
-          "Application Resubmitted and is Pending Approval " + this.formData.name
+          "Application Resubmitted and is Pending Approval " +
+            this.formData.name
         );
+        this.$forceUpdate();
       } else {
         alert("You must be signed in");
       }
@@ -233,10 +235,12 @@ export default {
             console.log("Exist: ", this.exists);
           } else {
             this.formData.name = docSnap.data().businessInfo.businessName;
-            this.formData.regNumber = docSnap.data().businessInfo.registrationNumber;
+            this.formData.regNumber =
+              docSnap.data().businessInfo.registrationNumber;
             this.formData.type = docSnap.data().businessInfo.businessType;
             this.formData.address = docSnap.data().businessInfo.address;
-            this.formData.contactNumber = docSnap.data().businessInfo.contactNumber;
+            this.formData.contactNumber =
+              docSnap.data().businessInfo.contactNumber;
             this.formData.date = docSnap.data().date;
           }
         } else {
