@@ -27,7 +27,7 @@
         <q-icon name="las la-igloo" color="primary" size="56px" />
         <div class="q-mt-md text-center">
           <div class="text-h6">{{ busName }}</div>
-          Relevent Business Information and Description would be here
+          {{ busDes }}
         </div>
       </q-carousel-slide>
       <q-carousel-slide :name="2" class="column no-wrap flex-center">
@@ -85,7 +85,7 @@ export default {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          console.log(this.center);
+
           this.map.flyTo({ center: this.center });
         },
         (error) => {
@@ -108,7 +108,6 @@ export default {
           this.markers.push(doc.data());
         }
       });
-      console.log(this.markers);
     },
     searchLocation() {
       console.log(this.locSearch);
@@ -161,9 +160,9 @@ export default {
         const marker = new ClickableMarker()
           .setLngLat([x.locations.lng, x.locations.lat])
           .onClick(() => {
-            console.log(marker);
             this.carousel = true;
-            console.log(x);
+            this.busName = x.name;
+            this.busDes = x.desc;
           })
           .addTo(this.map);
       });
@@ -195,7 +194,6 @@ export default {
       var lon = e.coords.longitude;
       var lat = e.coords.latitude;
       var position = [lon, lat];
-      console.log(position);
     });
   },
 };
