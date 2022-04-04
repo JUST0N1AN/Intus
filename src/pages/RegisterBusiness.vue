@@ -113,6 +113,8 @@ export default {
               email: this.email,
               desc: this.desc,
               type: "bus",
+              approved: false,
+              declined: false,
               req: [],
             })
               .then(() => {
