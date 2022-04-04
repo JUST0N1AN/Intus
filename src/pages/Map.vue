@@ -36,7 +36,6 @@
       navigation-icon="radio_button_unchecked"
       navigation
       padding
-      height="200px"
       class="bg-white shadow-1 rounded-borders"
     >
       <q-carousel-slide :name="1" class="column no-wrap flex-center">
@@ -50,7 +49,10 @@
         <q-icon name="las la-copy" color="primary" size="56px" />
         <div class="q-mt-md text-center">
           <div class="text-h6">Venue Requirements</div>
-          Requirements to enter venue would be here
+          <p v-if="busReq[0] == true">Nantional ID</p>
+          <p v-if="busReq[1] == true">Covid Vaccination Report</p>
+          <p v-if="busReq[2] == true">PCR/Rapid Covid Test</p>
+          <p v-if="busReq[3]">Minimim Age: {{ busReq[3] }}</p>
         </div>
       </q-carousel-slide>
     </q-carousel>
@@ -89,6 +91,7 @@ export default {
       slide: ref(1),
       busName: null,
       busDes: null,
+      busReq: [],
       locSearch: null,
       map: null,
     };
@@ -183,6 +186,7 @@ export default {
             this.carousel = true;
             this.busName = x.name;
             this.busDes = x.desc;
+            this.busReq = x.req;
           })
           .addTo(this.map);
       });

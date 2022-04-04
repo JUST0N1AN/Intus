@@ -1,9 +1,18 @@
 <template>
   <h3 class="row justify-center">Business Verification</h3>
 
-  <div v-if="!this.approved && this.exists">
-    <h3>Your Application Is Pending Approval</h3>
-    <p>You can edit your application and resubmit.</p>
+  <div v-if="!this.approved && this.exists && !this.declined">
+    <h5 class="row justify-center">Your Application Is Pending Approval</h5>
+    <p class="row justify-center">
+      You can edit your application and resubmit.
+    </p>
+  </div>
+
+  <div v-if="!this.approved && this.exists && this.declined">
+    <h5 class="row justify-center">
+      Your Application Has Been Declined (Please Resubmit Correct Documents)
+    </h5>
+    <p class="row justify-center">Admin Comments:</p>
   </div>
 
   <div class="row" v-if="!this.exists || !this.approved">
@@ -85,18 +94,32 @@
         </q-file>
       </q-form>
       <div class="row justify-center q-pt-md" v-if="!this.exists">
-        <q-btn @click="regBus(); " type="submit" label="submit" color="primary"></q-btn>
+        <q-btn
+          @click="regBus()"
+          type="submit"
+          label="submit"
+          color="primary"
+        ></q-btn>
       </div>
 
       <div class="row justify-center q-pt-md" v-if="this.exists">
-        <q-btn @click="updateRegBuss(); " type="submit" label="resubmit" color="primary"></q-btn>
+        <q-btn
+          @click="updateRegBuss()"
+          type="submit"
+          label="resubmit"
+          color="primary"
+        ></q-btn>
       </div>
     </div>
   </div>
 
   <div class="q-pa-md" v-if="this.approved">
-    <h3>Your application has been approved</h3>
-    <q-icon class="las la-check-circle" size="xl" color="green"></q-icon>
+    <h5 class="row justify-center">Your application has been approved</h5>
+    <q-icon
+      class="las la-check-circle row justify-center"
+      size="xl"
+      color="green"
+    ></q-icon>
   </div>
 </template>
 
@@ -132,9 +155,7 @@ export default {
         contactNumber: null,
         file: null,
         approved: false,
-        decline: false,
         date: serverTimestamp(),
-
       },
       auth: null,
       user: null,
@@ -148,8 +169,9 @@ export default {
         "NGO",
       ],
 
-      exists: null,
-      approved: null,
+      exists: false,
+      approved: false,
+      declined: false,
     };
   },
   methods: {
@@ -175,8 +197,6 @@ export default {
                 contactNumber: this.formData.contactNumber,
                 file: this.formData.file[0].name,
                 fileUrl: url,
-                approved: this.formData.approved,
-                decline: this.formData.decline,
                 date: this.formData.date,
               },
             });
@@ -202,6 +222,7 @@ export default {
         uploadBytes(storageRef, this.formData.file[0]).then((snapshot) => {
           getDownloadURL(storageRef).then(async (url) => {
             await updateDoc(docRef, {
+              declined: false,
               businessInfo: {
                 businessName: this.formData.name,
                 registrationNumber: this.formData.regNumber,
@@ -210,8 +231,6 @@ export default {
                 contactNumber: this.formData.contactNumber,
                 file: this.formData.file[0].name,
                 fileUrl: url,
-                approved: this.formData.approved,
-                decline: this.formData.decline,
                 date: timeRef,
               },
             });
@@ -219,9 +238,8 @@ export default {
         });
         alert(
           "Application Resubmitted and is Pending Approval " +
-          this.formData.name
+            this.formData.name
         );
-
       } else {
         alert("You must be signed in");
       }
@@ -237,16 +255,22 @@ export default {
         if (docSnap.data().businessInfo != null) {
           this.exists = true;
           console.log("Exists");
-          if (docSnap.data().businessInfo.approved) {
+          console.log(this.declined);
+          if (docSnap.data().declined) {
+            this.declined = true;
+          }
+          if (docSnap.data().approved) {
             this.approved = true;
             console.log("Approval: ", this.approved);
             console.log("Exist: ", this.exists);
           } else {
             this.formData.name = docSnap.data().businessInfo.businessName;
-            this.formData.regNumber = docSnap.data().businessInfo.registrationNumber;
+            this.formData.regNumber =
+              docSnap.data().businessInfo.registrationNumber;
             this.formData.type = docSnap.data().businessInfo.businessType;
             this.formData.address = docSnap.data().businessInfo.address;
-            this.formData.contactNumber = docSnap.data().businessInfo.contactNumber;
+            this.formData.contactNumber =
+              docSnap.data().businessInfo.contactNumber;
             this.formData.date = docSnap.data().date;
           }
         } else {
