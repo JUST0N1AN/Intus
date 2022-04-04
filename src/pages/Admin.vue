@@ -64,7 +64,7 @@
               >
                 <q-item-section>
                   <q-item-label overline>{{ i.data().name }}</q-item-label>
-                  <q-item-label>Item with caption</q-item-label>
+                  <q-item-label>{{ i.data().desc }}</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -78,7 +78,7 @@
               <q-item v-ripple v-for="(i, index) in users" :key="index">
                 <q-item-section>
                   <q-item-label overline>{{ i.data().name }}</q-item-label>
-                  <q-item-label>Item with caption</q-item-label>
+                  <q-item-label>{{ i.data().email }}</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
