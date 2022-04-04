@@ -2,14 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title>Intus</q-toolbar-title>
 
@@ -71,6 +64,15 @@
 
           <q-item-section>Upload</q-item-section>
         </q-item>
+
+        <q-item clickable v-ripple v-if="loggedIn" to="customerinfoform">
+          <q-item-section avatar>
+            <q-icon color="primary" name="lab la-wpforms" />
+          </q-item-section>
+
+          <q-item-section>Registration Form</q-item-section>
+        </q-item>
+
         <q-item clickable v-ripple v-if="loggedIn" to="mydocs">
           <q-item-section avatar>
             <q-icon color="primary" name="las la-file" />
