@@ -85,10 +85,18 @@ const routes = [
     children: [{ path: "", component: () => import("pages/QRCode.vue") }],
   },
   {
+    path: "/scanqr",
+    name: "ScanQR",
+    component: () => import("layouts/BusinessLayout.vue"),
+    children: [{ path: "", component: () => import("pages/ScanQR.vue") }],
+  },
+  {
     path: "/customerinfoform",
     name: "CustomerInfoForm",
     component: () => import("layouts/MainLayout.vue"),
-    children: [{ path: "", component: () => import("pages/CustomerInfoForm.vue") }],
+    children: [
+      { path: "", component: () => import("pages/CustomerInfoForm.vue") },
+    ],
   },
 
   // Always leave this as last one,
