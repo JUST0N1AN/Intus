@@ -266,6 +266,13 @@
         </template>
         <template v-slot:hint>Field hint</template>
       </q-file>
+
+       <q-btn
+          @click="submit()"
+          type="submit"
+          label="submit"
+          color="primary"
+        ></q-btn>
     </q-form>
   </div>
 </template>
@@ -314,7 +321,12 @@ export default {
       ],
       date: ref('2021/10/01')
     }
-  }
+  },
+   methods: {
+      submit() {
+
+      },
+    }
 }
 </script>
 
