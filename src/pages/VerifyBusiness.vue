@@ -8,7 +8,7 @@
 
   <div class="row" v-if="!this.exists || !this.approved">
     <div class="col-6 offset-3">
-      <q-form  ref="form">
+      <q-form ref="form">
         <q-input
           square
           filled
@@ -132,11 +132,14 @@ export default {
         contactNumber: null,
         file: null,
         approved: false,
+        decline: false,
         date: serverTimestamp(),
+
       },
       auth: null,
       user: null,
       documents: [],
+      componentKey: 0,
 
       options: [
         "Sole Proprietorship",
@@ -150,6 +153,9 @@ export default {
     };
   },
   methods: {
+    forceRerender() {
+      this.componentKey += 1;
+    },
     regBus() {
       const auth = getAuth();
       const user = auth.currentUser;
@@ -170,6 +176,7 @@ export default {
                 file: this.formData.file[0].name,
                 fileUrl: url,
                 approved: this.formData.approved,
+                decline: this.formData.decline,
                 date: this.formData.date,
               },
             });
@@ -204,6 +211,7 @@ export default {
                 file: this.formData.file[0].name,
                 fileUrl: url,
                 approved: this.formData.approved,
+                decline: this.formData.decline,
                 date: timeRef,
               },
             });
@@ -211,9 +219,9 @@ export default {
         });
         alert(
           "Application Resubmitted and is Pending Approval " +
-            this.formData.name
+          this.formData.name
         );
-        this.$forceUpdate();
+
       } else {
         alert("You must be signed in");
       }
@@ -235,12 +243,10 @@ export default {
             console.log("Exist: ", this.exists);
           } else {
             this.formData.name = docSnap.data().businessInfo.businessName;
-            this.formData.regNumber =
-              docSnap.data().businessInfo.registrationNumber;
+            this.formData.regNumber = docSnap.data().businessInfo.registrationNumber;
             this.formData.type = docSnap.data().businessInfo.businessType;
             this.formData.address = docSnap.data().businessInfo.address;
-            this.formData.contactNumber =
-              docSnap.data().businessInfo.contactNumber;
+            this.formData.contactNumber = docSnap.data().businessInfo.contactNumber;
             this.formData.date = docSnap.data().date;
           }
         } else {
