@@ -84,6 +84,12 @@ const routes = [
     component: () => import("layouts/MainLayout.vue"),
     children: [{ path: "", component: () => import("pages/QRCode.vue") }],
   },
+  {
+    path: "/scanqr",
+    name: "ScanQR",
+    component: () => import("layouts/BusinessLayout.vue"),
+    children: [{ path: "", component: () => import("pages/ScanQR.vue") }],
+  },
 
   // Always leave this as last one,
   // but you can also remove it

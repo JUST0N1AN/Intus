@@ -64,6 +64,12 @@
           </q-item-section>
           <q-item-section>Business Options</q-item-section>
         </q-item>
+        <q-item clickable v-ripple to="/scanqr">
+          <q-item-section avatar>
+            <q-icon color="primary" name="las la-chess-board" />
+          </q-item-section>
+          <q-item-section>Scan QRCode</q-item-section>
+        </q-item>
         <!-- <q-item clickable v-ripple v-if="loggedIn" to="upload">
           <q-item-section avatar>
             <q-icon color="primary" name="las la-file-upload" />
