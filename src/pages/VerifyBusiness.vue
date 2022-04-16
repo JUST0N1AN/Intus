@@ -250,7 +250,6 @@ export default {
       console.log(user);
       const docRef = doc(db, "business", user.uid);
       const docSnap = await getDoc(docRef);
-      console.log("Docs: ", docSnap.data());
       if (user) {
         if (docSnap.data().businessInfo != null) {
           this.exists = true;
@@ -275,7 +274,6 @@ export default {
           }
         } else {
           this.exists = false;
-          console.log("No such document!");
         }
       } else {
         alert("Must be signed in");

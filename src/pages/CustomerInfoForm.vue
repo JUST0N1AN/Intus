@@ -218,6 +218,8 @@ export default {
       date1: null,
       date2: null,
 
+      exists: false,
+
     }
   },
   methods: {
@@ -298,10 +300,9 @@ export default {
                   idFront: documentsURL[0],
                   idBack: documentsURL[1],
                   frontVaxCard: documentsURL[2],
-                  isnideVaxCard: documentsURL[3],
+                  insideVaxCard: documentsURL[3],
                   passportPhoto: documentsURL[4],
                 }
-
               },
             });
             alert("Submitted Succesfully " + this.formData.firstName);
@@ -312,7 +313,37 @@ export default {
         alert("Not Logged In");
       }
     },
+    async checkExistence() {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      if(user){
+        if(docSnap.data().customerInfo !=null){
+          this.exists = true;
+          this.formData.firstName = docSnap.data().customerInfo.firstName;
+          this.formData.lastName = docSnap.data().customerInfo.lastName ;
+          this.formData.identificationType = docSnap.data().customerInfo.idType;
+          this.formData.identificationNumber = docSnap.data().customerInfo.idNumber;
+          this.formData.age = docSnap.data().customerInfo.age;
+          this.formData.DOB = docSnap.data().customerInfo.DOB;
+          this.formData.phoneNumber = docSnap.data().customerInfo.phoneNumber;
+          this.formData.vaccine.firstDoseType = docSnap.data().customerInfo.firstDoseVaccineType;
+          this.formData.vaccine.secondDoseType = docSnap.data().customerInfo.secondDoseVaccineType;
+          this.formData.vaccine.firstDoseDate = docSnap.data().customerInfo.firstDoseDate;
+          this.formData.vaccine.secondDoseDate = docSnap.data().customerInfo.secondDoseDate;
+        }
+      }
+      else{
+        alert("Must be signed in");
+      }
+
+    console.log("Exist:",docSnap.data());
+    }
+  },
+  mounted() {
+    this.checkExistence();
   }
-}
+};
 </script>
 
