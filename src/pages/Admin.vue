@@ -4,6 +4,7 @@
     <q-card>
       <q-tabs
         v-model="tab"
+        outside-arrows
         dense
         class="text-grey"
         active-color="primary"

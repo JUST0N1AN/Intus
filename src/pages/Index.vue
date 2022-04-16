@@ -1,11 +1,12 @@
 <template>
-  <q-page class="flex flex-center">
+  <div class="row justify-center">
     <img
       alt="Quasar logo"
       src="~assets/Intus_Logo.svg"
       style="width: 450px; height: 450px"
     />
-  </q-page>
+  </div>
+  <div class="row justify-center"></div>
 </template>
 
 <script>
