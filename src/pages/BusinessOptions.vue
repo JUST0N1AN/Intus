@@ -5,6 +5,7 @@
       <q-tabs
         v-model="tab"
         dense
+        outside-arrows
         class="text-grey"
         active-color="primary"
         indicator-color="primary"
@@ -143,7 +144,7 @@ var mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 export default {
   setup() {
     return {
-      tab: ref("mails"),
+      tab: ref("entryreq"),
       govID: ref(true),
       vaxRec: ref(false),
       covTest: ref(true),
