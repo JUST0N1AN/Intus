@@ -21,6 +21,7 @@
     "firebase": "^9.6.6",
     "mapbox-gl": "^2.7.1",
     "quasar": "^2.0.0",
+    "string-similarity": "^4.0.4",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0",
     "vue3-google-map": "^0.8.3",

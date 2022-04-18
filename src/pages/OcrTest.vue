@@ -20,7 +20,7 @@ export default {
   },
   mounted() {
     let fileurl =
-      "https://firebasestorage.googleapis.com/v0/b/intus-d9b58.appspot.com/o/Capture.JPG?alt=media&token=e9b9f2bf-4d94-4e34-a96c-a7e140106a45";
+      "https://firebasestorage.googleapis.com/v0/b/intus-d9b58.appspot.com/o/Satyaan%20middle.jpeg?alt=media&token=96b6eda9-092e-473a-9e86-6527f639451a";
 
     this.getOCRData(fileurl);
   },

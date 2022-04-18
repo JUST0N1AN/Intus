@@ -319,6 +319,8 @@
 </template>
 
 <script>
+const axios = require("axios");
+var stringSimilarity = require("string-similarity");
 import {
   collection,
   addDoc,
@@ -403,16 +405,49 @@ export default {
       }
       formData.age = age;
     },
+    async getOCRData(fileUrl, str) {
+      let apiurl = "https://googlevision-intus.herokuapp.com/ocr/uid?url=";
+      let encodedUrl = encodeURIComponent(fileUrl);
+      let newUrl = apiurl + encodedUrl;
+      await axios.get(newUrl).then((res) => {
+        console.log(res.data);
+        console.log(str);
+        for (const x in res.data) {
+          if (stringSimilarity.compareTwoStrings(res.data[x], str) >= 0.8) {
+            console.log(res.data[x]);
+            return true;
+          }
+          // console.log(stringSimilarity.compareTwoStrings(res.data[x], str));
+          // console.log(res.data[x]);
+        }
+      });
+      return false;
+    },
     async submit() {
       const auth = getAuth();
       const user = auth.currentUser;
       const docRef = doc(db, "users", user.uid);
       const storage = getStorage();
-      const idFrontStorageRef = ref(storage, this.formData.documents.identificationUsedFront[0].name);
-      const idBackStorageRef = ref(storage, this.formData.documents.identificationUsedBack[0].name);
-      const frontVaxCardStorageRef = ref(storage, this.formData.documents.frontVaccinationCard[0].name);
-      const insideVaxCardStorageRef = ref(storage, this.formData.documents.insideVaccinationCard[0].name);
-      const passportPhotoStorageRef = ref(storage, this.formData.passportPhoto[0].name);
+      const idFrontStorageRef = ref(
+        storage,
+        this.formData.documents.identificationUsedFront[0].name
+      );
+      const idBackStorageRef = ref(
+        storage,
+        this.formData.documents.identificationUsedBack[0].name
+      );
+      const frontVaxCardStorageRef = ref(
+        storage,
+        this.formData.documents.frontVaccinationCard[0].name
+      );
+      const insideVaxCardStorageRef = ref(
+        storage,
+        this.formData.documents.insideVaccinationCard[0].name
+      );
+      const passportPhotoStorageRef = ref(
+        storage,
+        this.formData.passportPhoto[0].name
+      );
 
       //calculateAge();
       if (user) {
@@ -422,6 +457,11 @@ export default {
         ).then((snapshot) => {
           getDownloadURL(idFrontStorageRef).then(async (idFrontURL) => {
             this.documents.idFront = idFrontURL;
+            const temp = this.getOCRData(
+              idFrontURL,
+              this.formData.identificationNumber
+            );
+            console.log(temp);
           });
         });
 
@@ -430,54 +470,67 @@ export default {
           this.formData.documents.identificationUsedBack[0]
         ).then((snapshot) => {
           getDownloadURL(idBackStorageRef).then(async (idBackURL) => {
-            console.log(idBackURL);
-             this.documents.idBack = idBackURL;
-
+            // console.log(idBackURL);
+            this.documents.idBack = idBackURL;
           });
         });
 
-        uploadBytes(frontVaxCardStorageRef, this.formData.documents.frontVaccinationCard[0]).then((snapshot) => {
-          getDownloadURL(frontVaxCardStorageRef).then(async (frontVaxCardURL) => {
-            this.documents.frontVaxCard = frontVaxCardURL;
-          });
+        uploadBytes(
+          frontVaxCardStorageRef,
+          this.formData.documents.frontVaccinationCard[0]
+        ).then((snapshot) => {
+          getDownloadURL(frontVaxCardStorageRef).then(
+            async (frontVaxCardURL) => {
+              this.documents.frontVaxCard = frontVaxCardURL;
+            }
+          );
         });
 
-        uploadBytes(insideVaxCardStorageRef, this.formData.documents.insideVaccinationCard[0]).then((snapshot) => {
-          getDownloadURL(insideVaxCardStorageRef).then(async (insideVaxCardURL) => {
-            this.documents.insideVaxCard = insideVaxCardURL;
-          });
+        uploadBytes(
+          insideVaxCardStorageRef,
+          this.formData.documents.insideVaccinationCard[0]
+        ).then((snapshot) => {
+          getDownloadURL(insideVaxCardStorageRef).then(
+            async (insideVaxCardURL) => {
+              this.documents.insideVaxCard = insideVaxCardURL;
+            }
+          );
         });
 
-
-        uploadBytes(passportPhotoStorageRef, this.formData.passportPhoto[0]).then((snapshot) => {
-          getDownloadURL(passportPhotoStorageRef).then(async (passportPhotoURL) => {
-            this.documents.passportPhoto = passportPhotoURL;
-            setTimeout(4000)
-            await updateDoc(docRef, {
-              customerInfo: {
-                firstName: this.formData.firstName,
-                lastName: this.formData.lastName,
-                idType: this.formData.identificationType,
-                idNumber: this.formData.identificationNumber,
-                age: this.formData.age,
-                DOB: this.formData.DOB,
-                phoneNumber: this.formData.phoneNumber,
-                firstDoseVaccineType: this.formData.vaccine.firstDoseType,
-                secondDoseVaccineType: this.formData.vaccine.secondDoseType,
-                firstDoseDate: this.formData.vaccine.firstDoseDate,
-                secondDoseDate: this.formData.vaccine.secondDoseDate,
-                documents: this.documents,
-                // documents: {
-                //   idFront: documentsURL[0],
-                //   idBack: documentsURL[1],
-                //   frontVaxCard: documentsURL[2],
-                //   insideVaxCard: documentsURL[3],
-                //   passportPhoto: documentsURL[4],
-                // }
-              },
-            });
-            alert("Submitted Succesfully " + this.formData.firstName);
-          });
+        uploadBytes(
+          passportPhotoStorageRef,
+          this.formData.passportPhoto[0]
+        ).then((snapshot) => {
+          getDownloadURL(passportPhotoStorageRef).then(
+            async (passportPhotoURL) => {
+              this.documents.passportPhoto = passportPhotoURL;
+              setTimeout(4000);
+              await updateDoc(docRef, {
+                customerInfo: {
+                  firstName: this.formData.firstName,
+                  lastName: this.formData.lastName,
+                  idType: this.formData.identificationType,
+                  idNumber: this.formData.identificationNumber,
+                  age: this.formData.age,
+                  DOB: this.formData.DOB,
+                  phoneNumber: this.formData.phoneNumber,
+                  firstDoseVaccineType: this.formData.vaccine.firstDoseType,
+                  secondDoseVaccineType: this.formData.vaccine.secondDoseType,
+                  firstDoseDate: this.formData.vaccine.firstDoseDate,
+                  secondDoseDate: this.formData.vaccine.secondDoseDate,
+                  documents: this.documents,
+                  // documents: {
+                  //   idFront: documentsURL[0],
+                  //   idBack: documentsURL[1],
+                  //   frontVaxCard: documentsURL[2],
+                  //   insideVaxCard: documentsURL[3],
+                  //   passportPhoto: documentsURL[4],
+                  // }
+                },
+              });
+              alert("Submitted Succesfully " + this.formData.firstName);
+            }
+          );
         });
       } else {
         alert("Not Logged In");
