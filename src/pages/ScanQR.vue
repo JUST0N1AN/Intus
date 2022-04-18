@@ -60,7 +60,7 @@ export default {
       if (docSnap.exists()) {
         this.userName = docSnap.data().name;
       } else {
-        console.log("Error finding ID");
+        alert("Error finding ID");
       }
 
       const querySnapshot = await getDocs(
