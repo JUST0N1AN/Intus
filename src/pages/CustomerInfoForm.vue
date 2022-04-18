@@ -2,36 +2,75 @@
   <h3 class="row justify-center">Customer Information Registration Form</h3>
 
   <div class="q-pa-md">
-    <q-img src="~assets/ProfilePhoto.png" spinner-color="white" style="width: 150px; height: 150px"
-      img-class="my-custom-image" class="rounded-borders"></q-img>
+    <q-img
+      src="~assets/ProfilePhoto.png"
+      spinner-color="white"
+      style="width: 150px; height: 150px"
+      img-class="my-custom-image"
+      class="rounded-borders"
+    ></q-img>
     <p>
       <strong>Passport Size Photo</strong>
     </p>
   </div>
   <div class>
     <q-form>
-      <q-file v-model="formData.passportPhoto" label="Upload Passport Size Photo" square filled counter
-        hint="Passport Size Photo" max-files="1" :rules="[(val) => !!val || 'Field is required']" multiple>
+      <q-file
+        v-model="formData.passportPhoto"
+        label="Upload Passport Size Photo"
+        square
+        filled
+        counter
+        hint="Passport Size Photo"
+        max-files="1"
+        :rules="[(val) => !!val || 'Field is required']"
+        multiple
+      >
         <template v-slot:prepend>
           <q-icon name="photo" />
         </template>
       </q-file>
 
-      <bold>First Name</bold>
-      <q-input square filled label="First Name" v-model="formData.firstName"
-        :rules="[(val) => !!val || 'Field is required']" id="firstName" required />
-      <bold>Last Name</bold>
-      <q-input square filled label="Last Name" v-model="formData.lastName"
-        :rules="[(val) => !!val || 'Field is required']" id="lasName" required />
+      <strong>First Name</strong>
+      <q-input
+        square
+        filled
+        label="First Name"
+        v-model="formData.firstName"
+        :rules="[(val) => !!val || 'Field is required']"
+        id="firstName"
+        required
+      />
+      <strong>Last Name</strong>
+      <q-input
+        square
+        filled
+        label="Last Name"
+        v-model="formData.lastName"
+        :rules="[(val) => !!val || 'Field is required']"
+        id="lasName"
+        required
+      />
 
-      <!-- <bold>Age</bold>
+      <!-- <strong>Age</strong>
       <q-input v-model.number="formData.age" type="number" filled style="max-width: 200px" /> -->
 
-      <bold>Date of Birth</bold>
-      <q-input filled v-model="formData.DOB" mask="date" :rules="['date']" label="YYYY/MM/DD">
+      <strong>Date of Birth</strong>
+      <q-input
+        filled
+        v-model="formData.DOB"
+        mask="date"
+        :rules="['date']"
+        label="YYYY/MM/DD"
+      >
         <template v-slot:append>
           <q-icon name="event" class="cursor-pointer">
-            <q-popup-proxy ref="qDateProxy" cover transition-show="scale" transition-hide="scale">
+            <q-popup-proxy
+              ref="qDateProxy"
+              cover
+              transition-show="scale"
+              transition-hide="scale"
+            >
               <q-date v-model="formData.DOB">
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
@@ -42,28 +81,68 @@
         </template>
       </q-input>
 
-      <bold>Contact Number</bold>
-      <q-input square filled label=" Contact Number" v-model="formData.phoneNumber" mask="(###) ### - ####"
-        hint="Mask: (###) ### - ####" :rules="[(val) => !!val || 'Field is required']" id="contactNumber">
+      <strong>Contact Number</strong>
+      <q-input
+        square
+        filled
+        label=" Contact Number"
+        v-model="formData.phoneNumber"
+        mask="(###) ### - ####"
+        hint="Mask: (###) ### - ####"
+        :rules="[(val) => !!val || 'Field is required']"
+        id="contactNumber"
+      >
         <template v-slot:prepend>
           <q-icon name="phone" />
         </template>
       </q-input>
 
-      <bold>Identification Type</bold>
-      <q-select square filled v-model="formData.identificationType" :options="idTypes" label="Identification Type"
-        id="type" :rules="[(val) => !!val || 'Field is required']" />
-      <bold>Identification Number</bold>
-      <q-input square filled label="Identification Number" v-model="formData.identificationNumber"
-        :rules="[(val) => !!val || 'Field is required']" id="idNumber" required />
-      <bold>Vaccine Type - 1st Dose</bold>
-      <q-select square filled v-model="formData.vaccine.firstDoseType" :options="vaccineTypes"
-        label="Vaccine Type - 1st Dose" id="type" :rules="[(val) => !!val || 'Field is required']" />
-      <bold>Vaccine Type - 1st Dose Date</bold>
-      <q-input filled v-model="formData.vaccine.firstDoseDate" mask="date" :rules="['date']" label="YYYY/MM/DD">
+      <strong>Identification Type</strong>
+      <q-select
+        square
+        filled
+        v-model="formData.identificationType"
+        :options="idTypes"
+        label="Identification Type"
+        id="type"
+        :rules="[(val) => !!val || 'Field is required']"
+      />
+      <strong>Identification Number</strong>
+      <q-input
+        square
+        filled
+        label="Identification Number"
+        v-model="formData.identificationNumber"
+        :rules="[(val) => !!val || 'Field is required']"
+        id="idNumber"
+        required
+      />
+      <strong>Vaccine Type - 1st Dose</strong>
+      <q-select
+        square
+        filled
+        v-model="formData.vaccine.firstDoseType"
+        :options="vaccineTypes"
+        label="Vaccine Type - 1st Dose"
+        id="type"
+        :rules="[(val) => !!val || 'Field is required']"
+      />
+      <strong>Vaccine Type - 1st Dose Date</strong>
+      <q-input
+        filled
+        v-model="formData.vaccine.firstDoseDate"
+        mask="date"
+        :rules="['date']"
+        label="YYYY/MM/DD"
+      >
         <template v-slot:append>
           <q-icon name="event" class="cursor-pointer">
-            <q-popup-proxy ref="qDateProxy" cover transition-show="scale" transition-hide="scale">
+            <q-popup-proxy
+              ref="qDateProxy"
+              cover
+              transition-show="scale"
+              transition-hide="scale"
+            >
               <q-date v-model="formData.vaccine.firstDoseDate">
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
@@ -74,14 +153,32 @@
         </template>
       </q-input>
 
-      <bold>Vaccine Type - 2nd Dose</bold>
-      <q-select square filled v-model="formData.vaccine.secondDoseType" :options="vaccineTypes"
-        label="Vaccine Type - 2nd Dose" id="type" :rules="[(val) => !!val || 'Field is required']" />
-      <bold>Vaccine Type - 2nd Dose</bold>
-      <q-input filled v-model="formData.vaccine.secondDoseDate" mask="date" :rules="['date2']" label="YYYY/MM/DD">
+      <strong>Vaccine Type - 2nd Dose</strong>
+      <q-select
+        square
+        filled
+        v-model="formData.vaccine.secondDoseType"
+        :options="vaccineTypes"
+        label="Vaccine Type - 2nd Dose"
+        id="type"
+        :rules="[(val) => !!val || 'Field is required']"
+      />
+      <strong>Vaccine Type - 2nd Dose</strong>
+      <q-input
+        filled
+        v-model="formData.vaccine.secondDoseDate"
+        mask="date"
+        :rules="['date2']"
+        label="YYYY/MM/DD"
+      >
         <template v-slot:append>
           <q-icon name="event" class="cursor-pointer">
-            <q-popup-proxy ref="qDateProxy" cover transition-show="scale" transition-hide="scale">
+            <q-popup-proxy
+              ref="qDateProxy"
+              cover
+              transition-show="scale"
+              transition-hide="scale"
+            >
               <q-date v-model="formData.vaccine.secondDoseDate">
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
@@ -92,69 +189,131 @@
         </template>
       </q-input>
       <br />
-      <bold>Plese upload either PDF,PNG or JPEG files for the documents submitted below</bold>
+      <strong
+        >Plese upload either PDF,PNG or JPEG files for the documents submitted
+        below</strong
+      >
       <br />
       <br />
       <br />
-      <strong>File Upload - Vaccination Card.(Front and Inside of Immunization Card)</strong>
+      <strong
+        >File Upload - Vaccination Card.(Front and Inside of Immunization
+        Card)</strong
+      >
       <div class="q-pa-md">
-        <q-img src="~assets/VaxCardSampleFront.png" spinner-color="white" style="width: 280px; height: 200px"
-          img-class="my-custom-image" class="rounded-borders"></q-img>
+        <q-img
+          src="~assets/VaxCardSampleFront.png"
+          spinner-color="white"
+          style="width: 280px; height: 200px"
+          img-class="my-custom-image"
+          class="rounded-borders"
+        ></q-img>
       </div>
 
-      <q-file v-model="formData.documents.frontVaccinationCard" label="Front File(Capturing both Left & Right Sides) "
-        square filled counter hint="Front File(Capturing both Left & Right Sides)" max-files="1"
-        :rules="[(val) => !!val || 'Field is required']" multiple>
+      <q-file
+        v-model="formData.documents.frontVaccinationCard"
+        label="Front File(Capturing both Left & Right Sides) "
+        square
+        filled
+        counter
+        hint="Front File(Capturing both Left & Right Sides)"
+        max-files="1"
+        :rules="[(val) => !!val || 'Field is required']"
+        multiple
+      >
         <template v-slot:prepend>
           <q-icon name="cloud_upload" @click.stop />
         </template>
         <template v-slot:hint>Field hint</template>
       </q-file>
       <div class="q-pa-md">
-        <q-img src="~assets/VaxCardSampleBack.png" spinner-color="white" style="width: 280px; height: 200px"
-          img-class="my-custom-image" class="rounded-borders"></q-img>
+        <q-img
+          src="~assets/VaxCardSampleBack.png"
+          spinner-color="white"
+          style="width: 280px; height: 200px"
+          img-class="my-custom-image"
+          class="rounded-borders"
+        ></q-img>
       </div>
-      <q-file v-model="formData.documents.insideVaccinationCard"
-        label="Inside / Back File(Capturing both Inner Sides) * " square filled counter
-        hint="Inside / Back File(Capturing both Inner Sides) *" max-files="1"
-        :rules="[(val) => !!val || 'Field is required']" multiple>
+      <q-file
+        v-model="formData.documents.insideVaccinationCard"
+        label="Inside / Back File(Capturing both Inner Sides) * "
+        square
+        filled
+        counter
+        hint="Inside / Back File(Capturing both Inner Sides) *"
+        max-files="1"
+        :rules="[(val) => !!val || 'Field is required']"
+        multiple
+      >
         <template v-slot:prepend>
           <q-icon name="cloud_upload" @click.stop />
         </template>
         <template v-slot:hint>Field hint</template>
       </q-file>
 
-      <strong>File Upload - Identification used above (Birth Paper, Drivers Permit, National Identification Card or
-        Passport)</strong>
+      <strong
+        >File Upload - Identification used above (Birth Paper, Drivers Permit,
+        National Identification Card or Passport)</strong
+      >
       <div class="q-pa-md">
-        <q-img src="~assets/idCardFront.jpeg" spinner-color="white" style="width: 280px; height: 200px"
-          img-class="my-custom-image" class="rounded-borders"></q-img>
+        <q-img
+          src="~assets/idCardFront.jpeg"
+          spinner-color="white"
+          style="width: 280px; height: 200px"
+          img-class="my-custom-image"
+          class="rounded-borders"
+        ></q-img>
       </div>
 
-      <q-file v-model="formData.documents.identificationUsedFront"
-        label="Front File(Capturing both Left & Right Sides) " square filled counter
-        hint="Front File(Capturing both Left & Right Sides)" max-files="1"
-        :rules="[(val) => !!val || 'Field is required']" multiple>
+      <q-file
+        v-model="formData.documents.identificationUsedFront"
+        label="Front File(Capturing both Left & Right Sides) "
+        square
+        filled
+        counter
+        hint="Front File(Capturing both Left & Right Sides)"
+        max-files="1"
+        :rules="[(val) => !!val || 'Field is required']"
+        multiple
+      >
         <template v-slot:prepend>
           <q-icon name="cloud_upload" @click.stop />
         </template>
         <template v-slot:hint>Field hint</template>
       </q-file>
       <div class="q-pa-md">
-        <q-img src="~assets/idCardBack.png" spinner-color="white" style="width: 280px; height: 200px"
-          img-class="my-custom-image" class="rounded-borders"></q-img>
+        <q-img
+          src="~assets/idCardBack.png"
+          spinner-color="white"
+          style="width: 280px; height: 200px"
+          img-class="my-custom-image"
+          class="rounded-borders"
+        ></q-img>
       </div>
-      <q-file v-model="formData.documents.identificationUsedBack"
-        label="Inside / Back File(Capturing both Inner Sides) * " square filled counter
-        hint="Inside / Back File(Capturing both Inner Sides) *" max-files="1"
-        :rules="[(val) => !!val || 'Field is required']" multiple>
+      <q-file
+        v-model="formData.documents.identificationUsedBack"
+        label="Inside / Back File(Capturing both Inner Sides) * "
+        square
+        filled
+        counter
+        hint="Inside / Back File(Capturing both Inner Sides) *"
+        max-files="1"
+        :rules="[(val) => !!val || 'Field is required']"
+        multiple
+      >
         <template v-slot:prepend>
           <q-icon name="cloud_upload" @click.stop />
         </template>
         <template v-slot:hint>Field hint</template>
       </q-file>
 
-      <q-btn @click="submit()" type="submit" label="submit" color="primary"></q-btn>
+      <q-btn
+        @click="submit()"
+        type="submit"
+        label="submit"
+        color="primary"
+      ></q-btn>
     </q-form>
   </div>
 </template>
@@ -170,7 +329,13 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL, } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  deleteObject,
+  getDownloadURL,
+} from "firebase/storage";
 import db from "../boot/firebase.js";
 export default {
   data() {
@@ -202,7 +367,7 @@ export default {
         "National Identification Card",
         "Birth Paper",
         "Drivers Permit",
-        "Passport"
+        "Passport",
       ],
       vaccineTypes: [
         "AstraZeneca",
@@ -210,7 +375,7 @@ export default {
         "Pfizer",
         "Moderna",
         "Janssen",
-        "Sinovac"
+        "Sinovac",
       ],
 
       documents: {
@@ -225,8 +390,7 @@ export default {
       date2: null,
 
       exists: false,
-
-    }
+    };
   },
   methods: {
     calculateAge() {
@@ -239,7 +403,7 @@ export default {
       }
       formData.age = age;
     },
-    submit() {
+    async submit() {
       const auth = getAuth();
       const user = auth.currentUser;
       const docRef = doc(db, "users", user.uid);
@@ -252,13 +416,19 @@ export default {
 
       //calculateAge();
       if (user) {
-        uploadBytes(idFrontStorageRef, this.formData.documents.identificationUsedFront[0]).then((snapshot) => {
+        uploadBytes(
+          idFrontStorageRef,
+          this.formData.documents.identificationUsedFront[0]
+        ).then((snapshot) => {
           getDownloadURL(idFrontStorageRef).then(async (idFrontURL) => {
             this.documents.idFront = idFrontURL;
           });
         });
 
-        uploadBytes(idBackStorageRef, this.formData.documents.identificationUsedBack[0]).then((snapshot) => {
+        uploadBytes(
+          idBackStorageRef,
+          this.formData.documents.identificationUsedBack[0]
+        ).then((snapshot) => {
           getDownloadURL(idBackStorageRef).then(async (idBackURL) => {
             console.log(idBackURL);
              this.documents.idBack = idBackURL;
@@ -309,8 +479,7 @@ export default {
             alert("Submitted Succesfully " + this.formData.firstName);
           });
         });
-      }
-      else {
+      } else {
         alert("Not Logged In");
       }
     },
@@ -319,32 +488,35 @@ export default {
       const user = auth.currentUser;
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
-      if(user){
-        if(docSnap.data().customerInfo !=null){
+      if (user) {
+        if (docSnap.data().customerInfo != null) {
           this.exists = true;
           this.formData.firstName = docSnap.data().customerInfo.firstName;
-          this.formData.lastName = docSnap.data().customerInfo.lastName ;
+          this.formData.lastName = docSnap.data().customerInfo.lastName;
           this.formData.identificationType = docSnap.data().customerInfo.idType;
-          this.formData.identificationNumber = docSnap.data().customerInfo.idNumber;
+          this.formData.identificationNumber =
+            docSnap.data().customerInfo.idNumber;
           this.formData.age = docSnap.data().customerInfo.age;
           this.formData.DOB = docSnap.data().customerInfo.DOB;
           this.formData.phoneNumber = docSnap.data().customerInfo.phoneNumber;
-          this.formData.vaccine.firstDoseType = docSnap.data().customerInfo.firstDoseVaccineType;
-          this.formData.vaccine.secondDoseType = docSnap.data().customerInfo.secondDoseVaccineType;
-          this.formData.vaccine.firstDoseDate = docSnap.data().customerInfo.firstDoseDate;
-          this.formData.vaccine.secondDoseDate = docSnap.data().customerInfo.secondDoseDate;
+          this.formData.vaccine.firstDoseType =
+            docSnap.data().customerInfo.firstDoseVaccineType;
+          this.formData.vaccine.secondDoseType =
+            docSnap.data().customerInfo.secondDoseVaccineType;
+          this.formData.vaccine.firstDoseDate =
+            docSnap.data().customerInfo.firstDoseDate;
+          this.formData.vaccine.secondDoseDate =
+            docSnap.data().customerInfo.secondDoseDate;
         }
-      }
-      else{
+      } else {
         alert("Must be signed in");
       }
 
-    console.log("Exist:",docSnap.data());
-    }
+      console.log("Exist:", docSnap.data());
+    },
   },
   mounted() {
     this.checkExistence();
-  }
+  },
 };
 </script>
-

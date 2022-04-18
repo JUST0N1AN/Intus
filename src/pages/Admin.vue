@@ -40,7 +40,7 @@
                 v-for="(i, index) in pending"
                 :key="index"
                 @click="
-                  capture(i);
+                  capture(i, index);
                   pend = true;
                 "
               >
@@ -163,6 +163,7 @@ export default {
       pending: [],
       users: [],
       tab: ref("pending"),
+      ind: null,
     };
   },
   methods: {
@@ -188,8 +189,9 @@ export default {
       });
     },
 
-    capture(data) {
+    capture(data, i) {
       this.modCont = data;
+      this.ind = i;
       //console.log(data.id);
     },
     open(data) {
@@ -198,6 +200,7 @@ export default {
 
     approve(id) {
       const docRef = doc(db, "business", id);
+      this.pending.splice(this.ind, 1);
       updateDoc(docRef, {
         approved: true,
         declined: false,

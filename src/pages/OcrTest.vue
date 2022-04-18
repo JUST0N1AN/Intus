@@ -20,7 +20,7 @@ export default {
   },
   mounted() {
     let fileurl =
-      "https://firebasestorage.googleapis.com/v0/b/intus-d9b58.appspot.com/o/shane%20vaxx%20front.jpeg?alt=media&token=5514119a-8202-4b63-9c93-f17665b0b029";
+      "https://firebasestorage.googleapis.com/v0/b/intus-d9b58.appspot.com/o/Capture.JPG?alt=media&token=e9b9f2bf-4d94-4e34-a96c-a7e140106a45";
 
     this.getOCRData(fileurl);
   },

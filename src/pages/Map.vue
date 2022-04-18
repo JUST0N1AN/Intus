@@ -1,8 +1,8 @@
 <template>
   <div class="row justify-center">
     <div id="MAP">
-      <h3 class="row justify-center">Map Demo</h3>
-      <div class="row justify-center q-mb-md">
+      <h3 class="row justify-center">Locations</h3>
+      <div class="row q-mb-md">
         <q-list bordered separator>
           <q-item v-ripple v-for="x in this.markers" :key="x">
             <q-item-section> {{ x.name }}</q-item-section>
@@ -22,7 +22,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-6 offset-3" id="map" />
+    <div class="col-12" id="map" />
   </div>
 
   <q-dialog v-model="carousel">
@@ -49,7 +49,7 @@
         <q-icon name="las la-copy" color="primary" size="56px" />
         <div class="q-mt-md text-center">
           <div class="text-h6">Venue Requirements</div>
-          <p v-if="busReq[0] == true">Nantional ID</p>
+          <p v-if="busReq[0] == true">National ID</p>
           <p v-if="busReq[1] == true">Covid Vaccination Report</p>
           <p v-if="busReq[2] == true">PCR/Rapid Covid Test</p>
           <p v-if="busReq[3]">Minimim Age: {{ busReq[3] }}</p>
@@ -123,7 +123,7 @@ export default {
       const user = auth.currentUser;
       const querySnapshot = await getDocs(collection(db, "business"));
       querySnapshot.forEach((doc) => {
-        if (doc.data().locations) {
+        if (doc.data().locations && doc.data().approved == true) {
           this.markers.push(doc.data());
         }
       });
