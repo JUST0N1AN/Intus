@@ -411,14 +411,14 @@ export default {
         let encodedUrl = encodeURIComponent(fileUrl);
         let newUrl = apiurl + encodedUrl;
         axios.get(newUrl).then((res) => {
-          console.log(res.data);
-          console.log(str);
+          // console.log(res.data);
+          // console.log(str);
           for (const x in res.data) {
             if (
               stringSimilarity.compareTwoStrings(res.data[x], str) >= 0.8 ||
               res.data[x].toLowerCase().includes(str.toLowerCase())
             ) {
-              console.log(res.data[x]);
+              // console.log(res.data[x]);
               resolve(true);
             }
           }
@@ -495,17 +495,19 @@ export default {
           getDownloadURL(idBackStorageRef).then(async (idBackURL) => {
             // console.log(idBackURL);
             this.documents.idBack = idBackURL;
-            const temp = await this.getOCRDataT(
-              idBackURL,
-              this.formData.identificationNumber
-            ).then(async (res) => {
-              if (res === true) {
-                await updateDoc(docRef, { "validDocs.id": true });
-                // console.log("Correct");
-              } else {
-                await updateDoc(docRef, { "validDocs.id": false });
-              }
-            });
+            if (this.formData.identificationType == this.idTypes[0]) {
+              const temp = await this.getOCRDataT(
+                idBackURL,
+                this.formData.identificationNumber
+              ).then(async (res) => {
+                if (res === true) {
+                  await updateDoc(docRef, { "validDocs.id": true });
+                  // console.log("Correct");
+                } else {
+                  await updateDoc(docRef, { "validDocs.id": false });
+                }
+              });
+            }
           });
         });
 
