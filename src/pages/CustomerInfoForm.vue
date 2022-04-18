@@ -405,6 +405,27 @@ export default {
       }
       formData.age = age;
     },
+    getOCRDataT(fileUrl, str) {
+      return new Promise((resolve, success) => {
+        let apiurl = "https://googlevision-intus.herokuapp.com/ocr/uid?url=";
+        let encodedUrl = encodeURIComponent(fileUrl);
+        let newUrl = apiurl + encodedUrl;
+        axios.get(newUrl).then((res) => {
+          console.log(res.data);
+          console.log(str);
+          for (const x in res.data) {
+            if (
+              stringSimilarity.compareTwoStrings(res.data[x], str) >= 0.8 ||
+              res.data[x].toLowerCase().includes(str.toLowerCase())
+            ) {
+              console.log(res.data[x]);
+              resolve(true);
+            }
+          }
+          resolve(false);
+        });
+      });
+    },
     async getOCRData(fileUrl, str) {
       let apiurl = "https://googlevision-intus.herokuapp.com/ocr/uid?url=";
       let encodedUrl = encodeURIComponent(fileUrl);
@@ -415,13 +436,9 @@ export default {
         for (const x in res.data) {
           if (stringSimilarity.compareTwoStrings(res.data[x], str) >= 0.8) {
             console.log(res.data[x]);
-            return true;
           }
-          // console.log(stringSimilarity.compareTwoStrings(res.data[x], str));
-          // console.log(res.data[x]);
         }
       });
-      return false;
     },
     async submit() {
       const auth = getAuth();
@@ -457,11 +474,17 @@ export default {
         ).then((snapshot) => {
           getDownloadURL(idFrontStorageRef).then(async (idFrontURL) => {
             this.documents.idFront = idFrontURL;
-            const temp = this.getOCRData(
+            const temp = await this.getOCRDataT(
               idFrontURL,
               this.formData.identificationNumber
-            );
-            console.log(temp);
+            ).then(async (res) => {
+              if (res === true) {
+                await updateDoc(docRef, { "validDocs.id": true });
+                // console.log("Correct");
+              } else {
+                await updateDoc(docRef, { "validDocs.id": false });
+              }
+            });
           });
         });
 
@@ -472,6 +495,17 @@ export default {
           getDownloadURL(idBackStorageRef).then(async (idBackURL) => {
             // console.log(idBackURL);
             this.documents.idBack = idBackURL;
+            const temp = await this.getOCRDataT(
+              idBackURL,
+              this.formData.identificationNumber
+            ).then(async (res) => {
+              if (res === true) {
+                await updateDoc(docRef, { "validDocs.id": true });
+                // console.log("Correct");
+              } else {
+                await updateDoc(docRef, { "validDocs.id": false });
+              }
+            });
           });
         });
 
@@ -482,6 +516,21 @@ export default {
           getDownloadURL(frontVaxCardStorageRef).then(
             async (frontVaxCardURL) => {
               this.documents.frontVaxCard = frontVaxCardURL;
+              const temp = await this.getOCRDataT(
+                frontVaxCardURL,
+                this.formData.firstName
+              ).then(async (res) => {
+                if (res === true) {
+                  await updateDoc(docRef, {
+                    "validDocs.frontVaccinationCard": true,
+                  });
+                  // console.log("Correct");
+                } else {
+                  await updateDoc(docRef, {
+                    "validDocs.frontVaccinationCard": false,
+                  });
+                }
+              });
             }
           );
         });
@@ -493,6 +542,21 @@ export default {
           getDownloadURL(insideVaxCardStorageRef).then(
             async (insideVaxCardURL) => {
               this.documents.insideVaxCard = insideVaxCardURL;
+              const temp = await this.getOCRDataT(
+                insideVaxCardURL,
+                this.formData.vaccine.firstDoseType
+              ).then(async (res) => {
+                if (res === true) {
+                  await updateDoc(docRef, {
+                    "validDocs.insideVaccinationCard": true,
+                  });
+                  // console.log("Correct");
+                } else {
+                  await updateDoc(docRef, {
+                    "validDocs.insideVaccinationCard": false,
+                  });
+                }
+              });
             }
           );
         });
