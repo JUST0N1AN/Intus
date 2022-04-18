@@ -2,11 +2,18 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          @click="toggleLeftDrawer"
+        />
 
         <q-toolbar-title>Intus</q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div v-if="loggedIn">Hello, {{ this.name }}!</div>
       </q-toolbar>
     </q-header>
 
@@ -99,7 +106,14 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
-import { collection, addDoc, setDoc, doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  setDoc,
+  doc,
+  updateDoc,
+  getDoc,
+} from "firebase/firestore";
 import db from "../boot/firebase.js";
 
 export default defineComponent({
@@ -109,6 +123,7 @@ export default defineComponent({
     return {
       loggedIn: false,
       admin: false,
+      name: "",
     };
   },
   components: {},
@@ -138,6 +153,13 @@ export default defineComponent({
           // An error happened.
         });
     },
+    async getUserName() {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      const nameRef = doc(db, "users", user.uid);
+      const nameSnap = await getDoc(nameRef);
+      this.name = nameSnap.data().name;
+    },
   },
   mounted() {
     const auth = getAuth();
@@ -150,8 +172,8 @@ export default defineComponent({
         if (user.email == "test@test.com") {
           this.admin = true;
         }
-
         this.loggedIn = true;
+        this.getUserName();
       } else {
         // User is signed out
         // ...
