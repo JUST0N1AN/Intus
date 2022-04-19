@@ -1,27 +1,98 @@
 <template>
-  <div class="row justify-center"><h3>These are Your Documents</h3></div>
-  <div class="row justify-center" v-if="documents[0] == null">
-    You have not uploaded any documents
+  <div class="row justify-center">
+    <h5 class="row justify-center">These are Your Documents and Info</h5>
   </div>
-  <div class="q-pb-md"></div>
-  <p class="row justify-center" v-for="(i, index) in documents" :key="index">
-    <a :href="i.data().fileUrl" class="q-pr-md" target="_blank">{{
-      i.data().name
-    }}</a>
-    <q-btn
-      icon="las la-trash"
-      size="10px"
-      rounded
-      @click="removeDoc(i, index)"
-      color="primary"
-    ></q-btn>
-  </p>
+  <div class="row justify-center">
+    <div class="row justify-center">
+      <q-card class="my-card bg-primary text-white">
+        <img :src="pPhoto" width="250" height="300" />
+
+        <q-card-section>
+          <div class="text-h6">{{ name }}</div>
+          <div class="text-subtitle2">Age: {{ age }}</div>
+          <div class="text-subtitle2">DOB: {{ dob }}</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <p>
+            ID CARD:
+            <q-icon
+              color="black"
+              v-if="this.idVal == true"
+              name="las la-check-double"
+            /><q-icon
+              color="red"
+              v-if="this.idVal == false"
+              name="las la-exclamation-circle"
+            />
+          </p>
+          <p>
+            FRONT OF VACCINATION CARD:
+            <q-icon
+              color="black"
+              v-if="this.fVal == true"
+              name="las la-check-double"
+            /><q-icon
+              color="red"
+              v-if="this.fVal == false"
+              name="las la-exclamation-circle"
+            />
+          </p>
+          <p>
+            INSIDE OF VACCINATION CARD:
+            <q-icon
+              color="black"
+              v-if="this.iVal == true"
+              name="las la-check-double"
+            /><q-icon
+              color="red"
+              v-if="this.iVal == false"
+              name="las la-exclamation-circle"
+            />
+          </p>
+          <p></p>
+          <p>
+            <q-icon color="black" name="las la-check-double" />
+            means our system has fully verified a document.
+          </p>
+          <p>
+            <q-icon color="red" name="las la-exclamation-circle" />
+            indicates that you must re-upload the document on Customer
+            Information Page for evaluation.
+          </p>
+          <p>You can View your documents from the links below</p>
+        </q-card-section>
+
+        <q-card-actions>
+          <q-btn style="font-size: 10px" @click="gotoUrl(this.frontID)" flat
+            >Front ID Card</q-btn
+          >
+          <q-btn style="font-size: 10px" @click="gotoUrl(this.backID)" flat
+            >Back ID Card</q-btn
+          >
+          <q-btn style="font-size: 10px" @click="gotoUrl(this.frontVax)" flat
+            >Front Vax Card</q-btn
+          >
+          <q-btn style="font-size: 10px" @click="gotoUrl(this.inVax)" flat
+            >Inside Vax Card</q-btn
+          >
+        </q-card-actions>
+      </q-card>
+    </div>
+  </div>
 </template>
 
 <script>
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { addDoc, setDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import {
+  addDoc,
+  setDoc,
+  doc,
+  updateDoc,
+  deleteDoc,
+  getDoc,
+} from "firebase/firestore";
 import db from "../boot/firebase.js";
 import {
   getStorage,
@@ -33,31 +104,45 @@ import {
 export default {
   data() {
     return {
-      documents: [],
+      frontVax: null,
+      inVax: null,
+      frontID: null,
+      backID: null,
+      pPhoto: null,
+      fVal: false,
+      iVal: false,
+      idVal: false,
+      name: null,
+      age: 20,
+      dob: null,
     };
   },
   methods: {
     async getDocuments() {
       const auth = getAuth();
       const user = auth.currentUser;
-      const querySnapshot = await getDocs(
-        collection(db, "users", user.uid, "media")
-      );
-      querySnapshot.forEach((doc) => {
-        this.documents.push(doc);
-      });
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        this.name =
+          docSnap.data().customerInfo.firstName +
+          " " +
+          docSnap.data().customerInfo.lastName;
+        this.dob = docSnap.data().customerInfo.DOB;
+        this.frontVax = docSnap.data().customerInfo.documents.frontVaxCard;
+        this.inVax = docSnap.data().customerInfo.documents.insideVaxCard;
+        this.frontID = docSnap.data().customerInfo.documents.idFront;
+        this.backID = docSnap.data().customerInfo.documents.idBack;
+        this.pPhoto = docSnap.data().customerInfo.documents.passportPhoto;
+        this.fVal = docSnap.data().validDocs.frontVaccinationCard;
+        this.iVal = docSnap.data().validDocs.insideVaccinationCard;
+        this.idVal = docSnap.data().validDocs.id;
+        console.log(this.frontVax);
+      }
     },
-    removeDoc: function (item, index) {
-      const storage = getStorage();
-      const deleteRef = ref(storage, item.data().name);
-      deleteObject(deleteRef)
-        .then(() => {
-          const auth = getAuth();
-          const user = auth.currentUser;
-          deleteDoc(doc(db, "users", user.uid, "media", item.id));
-          this.documents.splice(index, 1);
-        })
-        .catch((error) => {});
+    gotoUrl(f) {
+      window.open(f, "_blank");
     },
   },
   mounted() {

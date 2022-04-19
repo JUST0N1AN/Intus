@@ -71,9 +71,8 @@
           <p>Date: {{ secondVaxDate }} Type: {{ secondVaxType }}</p>
           <p></p>
           <p style="font-size: 15px">
-            A
             <q-icon color="black" name="las la-check-double" />
-            means our system has fully verified a document. A
+            means our system has fully verified a document.
             <q-icon color="red" name="las la-exclamation-circle" />
             indicates that you must manually verify the document via the links
             below.
