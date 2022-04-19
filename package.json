@@ -1,10 +1,9 @@
 {
   "name": "quasar_test",
   "version": "0.0.1",
-  "description": "A Quasar Framework app",
-  "productName": "Intus",
-  "author": "shane12345601 <shane12345601@gmail.com>",
   "private": true,
+  "description": "A Quasar Framework app",
+  "author": "shane12345601 <shane12345601@gmail.com>",
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
@@ -21,6 +20,7 @@
     "firebase": "^9.6.6",
     "mapbox-gl": "^2.7.1",
     "quasar": "^2.0.0",
+    "register-service-worker": "^1.7.1",
     "string-similarity": "^4.0.4",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0",
@@ -30,11 +30,13 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",
     "@quasar/app": "^3.0.0",
+    "@vue/cli-plugin-pwa": "~4.5.15",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^7.0.0",
     "eslint-webpack-plugin": "^2.4.0",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "workbox-webpack-plugin": "^6.0.0"
   },
   "browserslist": [
     "last 10 Chrome versions",
@@ -51,5 +53,6 @@
     "node": ">= 12.22.1",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
-  }
+  },
+  "productName": "Intus"
 }
