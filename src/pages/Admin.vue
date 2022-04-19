@@ -192,7 +192,7 @@ export default {
     capture(data, i) {
       this.modCont = data;
       this.ind = i;
-      //console.log(data.id);
+      //
     },
     open(data) {
       window.open(data);
@@ -225,7 +225,6 @@ export default {
     displayDocs() {
       for (let i = 0; i < this.documents.length; i++) {
         if (this.documents[i].data().businessInfo) {
-          console.log(this.documents[i].data().businessInfo);
         }
       }
     },

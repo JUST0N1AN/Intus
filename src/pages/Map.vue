@@ -107,13 +107,10 @@ export default {
 
           this.map.flyTo({ center: this.center });
         },
-        (error) => {
-          console.log(error.message);
-        }
+        (error) => {}
       );
     },
     markerClick() {
-      console.log("Marker Clicked");
       this.carousel = true;
       this.busName = g.name;
     },
@@ -128,9 +125,7 @@ export default {
         }
       });
     },
-    searchLocation() {
-      console.log(this.locSearch);
-    },
+    searchLocation() {},
     goToLocation(x) {
       const newLoc = { lat: x.locations.lat, lng: x.locations.lng };
       this.map.flyTo({ center: newLoc });

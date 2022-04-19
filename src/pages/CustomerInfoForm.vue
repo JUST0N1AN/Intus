@@ -411,14 +411,14 @@ export default {
         let encodedUrl = encodeURIComponent(fileUrl);
         let newUrl = apiurl + encodedUrl;
         axios.get(newUrl).then((res) => {
-          // console.log(res.data);
-          // console.log(str);
+          //
+          //
           for (const x in res.data) {
             if (
               stringSimilarity.compareTwoStrings(res.data[x], str) >= 0.8 ||
               res.data[x].toLowerCase().includes(str.toLowerCase())
             ) {
-              // console.log(res.data[x]);
+              //
               resolve(true);
             }
           }
@@ -431,11 +431,8 @@ export default {
       let encodedUrl = encodeURIComponent(fileUrl);
       let newUrl = apiurl + encodedUrl;
       await axios.get(newUrl).then((res) => {
-        console.log(res.data);
-        console.log(str);
         for (const x in res.data) {
           if (stringSimilarity.compareTwoStrings(res.data[x], str) >= 0.8) {
-            console.log(res.data[x]);
           }
         }
       });
@@ -480,7 +477,7 @@ export default {
             ).then(async (res) => {
               if (res === true) {
                 await updateDoc(docRef, { "validDocs.id": true });
-                // console.log("Correct");
+                //
               } else {
                 await updateDoc(docRef, { "validDocs.id": false });
               }
@@ -493,7 +490,7 @@ export default {
           this.formData.documents.identificationUsedBack[0]
         ).then((snapshot) => {
           getDownloadURL(idBackStorageRef).then(async (idBackURL) => {
-            // console.log(idBackURL);
+            //
             this.documents.idBack = idBackURL;
             if (this.formData.identificationType == this.idTypes[0]) {
               const temp = await this.getOCRDataT(
@@ -502,7 +499,7 @@ export default {
               ).then(async (res) => {
                 if (res === true) {
                   await updateDoc(docRef, { "validDocs.id": true });
-                  // console.log("Correct");
+                  //
                 } else {
                   await updateDoc(docRef, { "validDocs.id": false });
                 }
@@ -526,7 +523,7 @@ export default {
                   await updateDoc(docRef, {
                     "validDocs.frontVaccinationCard": true,
                   });
-                  // console.log("Correct");
+                  //
                 } else {
                   await updateDoc(docRef, {
                     "validDocs.frontVaccinationCard": false,
@@ -552,7 +549,7 @@ export default {
                   await updateDoc(docRef, {
                     "validDocs.insideVaccinationCard": true,
                   });
-                  // console.log("Correct");
+                  //
                 } else {
                   await updateDoc(docRef, {
                     "validDocs.insideVaccinationCard": false,
@@ -630,8 +627,6 @@ export default {
       } else {
         alert("Must be signed in");
       }
-
-      console.log("Exist:", docSnap.data());
     },
   },
   mounted() {

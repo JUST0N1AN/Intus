@@ -107,7 +107,7 @@ export default {
           .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
-            console.log(user.uid);
+
             setDoc(doc(db, "business", user.uid), {
               name: this.bname,
               email: this.email,
@@ -118,16 +118,13 @@ export default {
               req: [],
             })
               .then(() => {
-                console.log("reached");
                 // const docRef = addDoc(
                 //   collection(db, "users", user.uid, "media",""),
                 //   {}
                 // );
                 this.$router.push({ path: "/IndexBusiness" });
               })
-              .catch((error) => {
-                console.log("Error occured in register: " + error);
-              });
+              .catch((error) => {});
             // ...
           })
           .catch((error) => {

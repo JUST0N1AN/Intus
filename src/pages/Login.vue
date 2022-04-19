@@ -71,7 +71,7 @@ export default {
         .then(async (userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log("Signed in: " + user.uid);
+
           // ...
           const docRef = doc(db, "users", user.uid);
 
@@ -90,7 +90,6 @@ export default {
           const errorCode = error.code;
           const errorMessage = error.message;
         });
-      console.log("Email: " + this.email + "\nPassord: " + this.password);
     },
   },
 };

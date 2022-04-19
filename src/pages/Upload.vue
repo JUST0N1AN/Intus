@@ -68,7 +68,6 @@ export default {
   },
   methods: {
     sub() {
-      console.log(this.formData[0].name);
       const auth = getAuth();
       const user = auth.currentUser;
       const metadata = {
@@ -80,7 +79,6 @@ export default {
       const storage = getStorage();
       const storageRef = ref(storage, this.formData[0].name);
       uploadBytes(storageRef, this.formData[0], metadata).then((snapshot) => {
-        console.log("File Uploaded");
         this.alert = true;
         getDownloadURL(storageRef).then((url) => {
           const docRef = addDoc(collection(db, "users", user.uid, "media"), {
@@ -104,7 +102,6 @@ export default {
       const storage = getStorage();
       const storageRef = ref(storage, files[0].name);
       uploadBytes(storageRef, files[0], metadata).then((snapshot) => {
-        console.log("File Uploaded");
         getDownloadURL(storageRef).then((url) => {
           const docRef = addDoc(collection(db, "users", user.uid, "media"), {
             name: files[0].name,
@@ -129,12 +126,8 @@ export default {
       const storage = getStorage();
       const deleteRef = ref(storage, this.filenames[0]);
       deleteObject(deleteRef)
-        .then(() => {
-          console.log("Successfully Deleted");
-        })
-        .catch((error) => {
-          console.log("File cannot be Deleted");
-        });
+        .then(() => {})
+        .catch((error) => {});
       item.image = false;
     },
   },

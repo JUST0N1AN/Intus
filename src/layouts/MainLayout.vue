@@ -137,7 +137,7 @@ export default defineComponent({
       signOut(auth)
         .then(() => {
           // Sign-out successful.
-          console.log("Logged out");
+
           this.loggedIn = false;
           this.admin = false;
           this.$router.push({ path: "/" });
@@ -161,7 +161,7 @@ export default defineComponent({
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         const uid = user.uid;
-        console.log(uid);
+
         if (user.email == "test@test.com") {
           this.admin = true;
         }
@@ -170,7 +170,6 @@ export default defineComponent({
       } else {
         // User is signed out
         // ...
-        console.log("Not signed in");
       }
     });
   },

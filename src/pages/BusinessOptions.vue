@@ -215,7 +215,7 @@ export default {
       const docRef = doc(db, "business", user.uid);
       const docSnap = await getDoc(docRef);
       let tempPos;
-      console.log(this.newPositions);
+
       this.positions.push();
       await updateDoc(docRef, {
         locations: {
@@ -261,7 +261,6 @@ export default {
       });
 
       this.map.on("click", (ev) => {
-        console.log(ev);
         this.newPositions = ev.lngLat;
         this.confirm = true;
       });
@@ -275,16 +274,14 @@ export default {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          console.log(this.center);
+
           this.map.flyTo({ center: this.center });
           // Create a new marker.
           const marker = new mapboxgl.Marker()
             .setLngLat([30.5, 50.5])
             .addTo(this.map);
         },
-        (error) => {
-          console.log(error.message);
-        }
+        (error) => {}
       );
     },
   },

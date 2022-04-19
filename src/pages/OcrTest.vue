@@ -13,9 +13,7 @@ export default {
       let apiurl = "https://googlevision-intus.herokuapp.com/ocr/uid?url=";
       let encodedUrl = encodeURIComponent(fileUrl);
       let newUrl = apiurl + encodedUrl;
-      await axios.get(newUrl).then((res) => {
-        console.log(res.data);
-      });
+      await axios.get(newUrl).then((res) => {});
     },
   },
   mounted() {

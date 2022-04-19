@@ -161,12 +161,6 @@ export default {
         this.firstVaxType = docSnap.data().customerInfo.firstDoseVaccineType;
         this.secondVaxDate = docSnap.data().customerInfo.secondDoseDate;
         this.secondVaxType = docSnap.data().customerInfo.secondDoseVaccineType;
-        console.log(this.profPic);
-        console.log(this.fVaxPic);
-        console.log(this.idFPic);
-        console.log(this.idBPic);
-        console.log(this.idType);
-        console.log(this.dob);
       } else {
         alert("Error finding ID");
       }
@@ -181,7 +175,7 @@ export default {
     onDecode(result) {
       this.scanned = true;
       this.result = result;
-      console.log(this.result);
+
       this.getDocuments(this.result);
     },
     gotoUrl(f) {

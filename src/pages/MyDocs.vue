@@ -56,11 +56,8 @@ export default {
           const user = auth.currentUser;
           deleteDoc(doc(db, "users", user.uid, "media", item.id));
           this.documents.splice(index, 1);
-          console.log("Successfully Deleted");
         })
-        .catch((error) => {
-          console.log("File cannot be Deleted");
-        });
+        .catch((error) => {});
     },
   },
   mounted() {

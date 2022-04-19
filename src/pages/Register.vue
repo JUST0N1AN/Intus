@@ -97,23 +97,20 @@ export default {
           .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
-            console.log(user.uid);
+
             setDoc(doc(db, "users", user.uid), {
               email: this.email,
               name: this.uname,
               type: "user",
             })
               .then(() => {
-                console.log("reached");
                 // const docRef = addDoc(
                 //   collection(db, "users", user.uid, "media",""),
                 //   {}
                 // );
                 this.$router.push({ path: "/" });
               })
-              .catch((error) => {
-                console.log("Error occured in register: " + error);
-              });
+              .catch((error) => {});
             // ...
           })
           .catch((error) => {

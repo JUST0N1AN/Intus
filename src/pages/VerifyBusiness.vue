@@ -247,21 +247,18 @@ export default {
     async checkApplicationExistence() {
       const auth = getAuth();
       const user = auth.currentUser;
-      console.log(user);
+
       const docRef = doc(db, "business", user.uid);
       const docSnap = await getDoc(docRef);
       if (user) {
         if (docSnap.data().businessInfo != null) {
           this.exists = true;
-          console.log("Exists");
-          console.log(this.declined);
+
           if (docSnap.data().declined) {
             this.declined = true;
           }
           if (docSnap.data().approved) {
             this.approved = true;
-            console.log("Approval: ", this.approved);
-            console.log("Exist: ", this.exists);
           } else {
             this.formData.name = docSnap.data().businessInfo.businessName;
             this.formData.regNumber =
