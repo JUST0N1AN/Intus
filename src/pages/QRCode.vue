@@ -1,13 +1,11 @@
 <template>
-  <div class="row justify-between">
-    <div class="col-6 offset-3">
-      <h4>Link to your Documents</h4>
-      <div class="">
-        <div class="q-my-md">{{ textOnScreen }}</div>
-        <div ref="qrcode"></div>
-      </div>
-    </div>
+  <div class="row justify-center">
+    <h4>Link to your Documents</h4>
   </div>
+  <div class="row justify-center">
+    <div class="q-my-md">{{ textOnScreen }}</div>
+  </div>
+  <div class="row justify-center" ref="qrcode"></div>
 </template>
 
 <script>
