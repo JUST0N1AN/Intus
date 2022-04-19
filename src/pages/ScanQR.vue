@@ -1,10 +1,10 @@
 <template>
   <div class="row justify-center" v-if="scanned == false">
-    <h4>Point Camera To QRCode to Scan</h4>
+    <h5>Point Camera To QRCode to Scan</h5>
   </div>
   <div class="row justify-center">
     <q-btn
-      class="q-mt-md"
+      class="q-mt-md q-mb-md"
       color="primary"
       v-if="scanned == true"
       @click="scanned = false"
@@ -16,15 +16,85 @@
       <qrcode-stream @decode="onDecode" @init="onInit"></qrcode-stream>
     </div>
   </div>
-  <div class="row" v-if="scanned == true">
-    <div class="col-6 offset-3">
-      <h4>Data Scanned</h4>
-      <p>User: {{ userName }}</p>
-      <p class="" v-for="(i, index) in documents" :key="index">
-        <a :href="i.data().fileUrl" class="q-pr-md" target="_blank">{{
-          i.data().name
-        }}</a>
-      </p>
+  <div class="row justify-center" v-if="scanned == true">
+    <div>
+      <q-card class="my-card bg-primary text-white">
+        <img :src="profPic" width="350" height="350" />
+
+        <q-card-section>
+          <div class="text-h6">{{ Name }}</div>
+          <div class="text-subtitle2">Age: {{ age }}</div>
+          <div class="text-subtitle2">DOB: {{ dob }}</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <p>
+            ID CARD:
+            <q-icon
+              color="green"
+              v-if="this.idVal == true"
+              name="las la-check-double"
+            /><q-icon
+              color="red"
+              v-if="this.idVal == false"
+              name="las la-exclamation-circle"
+            />
+          </p>
+          <p>
+            FRONT OF VACCINATION CARD:
+            <q-icon
+              color="green"
+              v-if="this.fVal == true"
+              name="las la-check-double"
+            /><q-icon
+              color="red"
+              v-if="this.fVal == false"
+              name="las la-exclamation-circle"
+            />
+          </p>
+          <p>
+            INSIDE OF VACCINATION CARD:
+            <q-icon
+              color="green"
+              v-if="this.iVal == true"
+              name="las la-check-double"
+            /><q-icon
+              color="red"
+              v-if="this.iVal == false"
+              name="las la-exclamation-circle"
+            />
+          </p>
+          <p>FIRST VACCINATION</p>
+          <p>Date: {{ firstVaxDate }} Type: {{ firstVaxType }}</p>
+          <p></p>
+          <p>SECOND VACCINATION</p>
+          <p>Date: {{ secondVaxDate }} Type: {{ secondVaxType }}</p>
+          <p></p>
+          <p style="font-size: 10px">
+            A
+            <q-icon color="green" name="las la-check-double" />
+            means our system has fully verified a document. A
+            <q-icon color="red" name="las la-exclamation-circle" />
+            indicates that you must manually verify the document via the links
+            below.
+          </p>
+        </q-card-section>
+
+        <q-card-actions>
+          <q-btn style="font-size: 10px" @click="gotoUrl(this.idFPic)" flat
+            >Front ID Card</q-btn
+          >
+          <q-btn style="font-size: 10px" @click="gotoUrl(this.idBPic)" flat
+            >Back ID Card</q-btn
+          >
+          <q-btn style="font-size: 10px" @click="gotoUrl(this.fVaxPic)" flat
+            >Front Vax Card</q-btn
+          >
+          <q-btn style="font-size: 10px" @click="gotoUrl(this.iVaxPic)" flat
+            >Inside Vax Card</q-btn
+          >
+        </q-card-actions>
+      </q-card>
     </div>
   </div>
 </template>
@@ -48,7 +118,22 @@ export default {
       result: "",
       error: "",
       documents: [],
-      userName: "",
+      Name: "",
+      fVal: false,
+      idVal: false,
+      iVal: false,
+      profPic: null,
+      fVaxPic: null,
+      idFPic: null,
+      idBPic: null,
+      iVaxPic: null,
+      idType: null,
+      firstVaxType: null,
+      firstVaxDate: null,
+      secondVaxType: null,
+      secondVaxDate: null,
+      age: 20,
+      dob: null,
     };
   },
   methods: {
@@ -58,23 +143,49 @@ export default {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        this.userName = docSnap.data().name;
+        this.Name =
+          docSnap.data().customerInfo.firstName +
+          " " +
+          docSnap.data().customerInfo.lastName;
+        this.profPic = docSnap.data().customerInfo.documents.passportPhoto;
+        this.fVaxPic = docSnap.data().customerInfo.documents.frontVaxCard;
+        this.iVaxPic = docSnap.data().customerInfo.documents.insideVaxCard;
+        this.idFPic = docSnap.data().customerInfo.documents.idFront;
+        this.idBPic = docSnap.data().customerInfo.documents.idBack;
+        this.fVal = docSnap.data().validDocs.frontVaccinationCard;
+        this.iVal = docSnap.data().validDocs.insideVaccinationCard;
+        this.idVal = docSnap.data().validDocs.id;
+        this.idType = docSnap.data().customerInfo.idType;
+        this.dob = docSnap.data().customerInfo.DOB;
+        this.firstVaxDate = docSnap.data().customerInfo.firstDoseDate;
+        this.firstVaxType = docSnap.data().customerInfo.firstDoseVaccineType;
+        this.secondVaxDate = docSnap.data().customerInfo.secondDoseDate;
+        this.secondVaxType = docSnap.data().customerInfo.secondDoseVaccineType;
+        console.log(this.profPic);
+        console.log(this.fVaxPic);
+        console.log(this.idFPic);
+        console.log(this.idBPic);
+        console.log(this.idType);
+        console.log(this.dob);
       } else {
         alert("Error finding ID");
       }
 
-      const querySnapshot = await getDocs(
-        collection(db, "users", userID, "media")
-      );
-      querySnapshot.forEach((doc) => {
-        this.documents.push(doc);
-      });
+      // const querySnapshot = await getDocs(
+      //   collection(db, "users", userID, "media")
+      // );
+      // querySnapshot.forEach((doc) => {
+      //   this.documents.push(doc);
+      // });
     },
     onDecode(result) {
       this.scanned = true;
       this.result = result;
       console.log(this.result);
       this.getDocuments(this.result);
+    },
+    gotoUrl(f) {
+      window.open(f, "_blank");
     },
     async onInit(promise) {
       try {
