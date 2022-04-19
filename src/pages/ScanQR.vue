@@ -47,7 +47,7 @@
               v-if="this.fVal == true"
               name="las la-check-double"
             /><q-icon
-              color="black"
+              color="red"
               v-if="this.fVal == false"
               name="las la-exclamation-circle"
             />
@@ -59,7 +59,7 @@
               v-if="this.iVal == true"
               name="las la-check-double"
             /><q-icon
-              color="black"
+              color="red"
               v-if="this.iVal == false"
               name="las la-exclamation-circle"
             />
