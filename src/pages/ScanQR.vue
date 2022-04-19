@@ -31,7 +31,7 @@
           <p>
             ID CARD:
             <q-icon
-              color="green"
+              color="black"
               v-if="this.idVal == true"
               name="las la-check-double"
             /><q-icon
@@ -43,11 +43,11 @@
           <p>
             FRONT OF VACCINATION CARD:
             <q-icon
-              color="green"
+              color="black"
               v-if="this.fVal == true"
               name="las la-check-double"
             /><q-icon
-              color="red"
+              color="black"
               v-if="this.fVal == false"
               name="las la-exclamation-circle"
             />
@@ -55,11 +55,11 @@
           <p>
             INSIDE OF VACCINATION CARD:
             <q-icon
-              color="green"
+              color="black"
               v-if="this.iVal == true"
               name="las la-check-double"
             /><q-icon
-              color="red"
+              color="black"
               v-if="this.iVal == false"
               name="las la-exclamation-circle"
             />
@@ -70,9 +70,9 @@
           <p>SECOND VACCINATION</p>
           <p>Date: {{ secondVaxDate }} Type: {{ secondVaxType }}</p>
           <p></p>
-          <p style="font-size: 10px">
+          <p style="font-size: 15px">
             A
-            <q-icon color="green" name="las la-check-double" />
+            <q-icon color="black" name="las la-check-double" />
             means our system has fully verified a document. A
             <q-icon color="red" name="las la-exclamation-circle" />
             indicates that you must manually verify the document via the links
