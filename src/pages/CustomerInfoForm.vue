@@ -408,7 +408,6 @@ export default {
       formData: {
         firstName: null,
         lastName: null,
-        age: null,
         DOB: null,
         phoneNumber: null,
         identificationType: null,
@@ -453,6 +452,7 @@ export default {
       date: null,
       date1: null,
       date2: null,
+      age: null,
 
       exists: false,
     };
@@ -460,13 +460,14 @@ export default {
   methods: {
     calculateAge() {
       var today = new Date();
-      var birthDate = formData.DOB;
+      var birthDate = this.formData.DOB;
+      birthDate = new Date(birthDate);
       var age = today.getFullYear() - birthDate.getFullYear();
       var m = today.getMonth() - birthDate.getMonth();
       if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
         age--;
       }
-      formData.age = age;
+      this.age = age;
     },
     getOCRDataT(fileUrl, str) {
       return new Promise((resolve, success) => {
@@ -526,7 +527,7 @@ export default {
         this.formData.passportPhoto[0].name
       );
 
-      //calculateAge();
+      this.calculateAge();
       if (user) {
         uploadBytes(
           idFrontStorageRef,
@@ -553,7 +554,6 @@ export default {
           this.formData.documents.identificationUsedBack[0]
         ).then((snapshot) => {
           getDownloadURL(idBackStorageRef).then(async (idBackURL) => {
-            //
             this.documents.idBack = idBackURL;
             if (this.formData.identificationType == this.idTypes[0]) {
               const temp = await this.getOCRDataT(
@@ -578,6 +578,7 @@ export default {
           getDownloadURL(frontVaxCardStorageRef).then(
             async (frontVaxCardURL) => {
               this.documents.frontVaxCard = frontVaxCardURL;
+
               const temp = await this.getOCRDataT(
                 frontVaxCardURL,
                 this.formData.firstName
@@ -604,6 +605,7 @@ export default {
           getDownloadURL(insideVaxCardStorageRef).then(
             async (insideVaxCardURL) => {
               this.documents.insideVaxCard = insideVaxCardURL;
+
               const temp = await this.getOCRDataT(
                 insideVaxCardURL,
                 this.formData.vaccine.firstDoseType
@@ -630,14 +632,14 @@ export default {
           getDownloadURL(passportPhotoStorageRef).then(
             async (passportPhotoURL) => {
               this.documents.passportPhoto = passportPhotoURL;
-              setTimeout(4000);
+              setTimeout(8000);
               await updateDoc(docRef, {
                 customerInfo: {
                   firstName: this.formData.firstName,
                   lastName: this.formData.lastName,
                   idType: this.formData.identificationType,
                   idNumber: this.formData.identificationNumber,
-                  age: this.formData.age,
+                  age: this.age,
                   DOB: this.formData.DOB,
                   phoneNumber: this.formData.phoneNumber,
                   firstDoseVaccineType: this.formData.vaccine.firstDoseType,
