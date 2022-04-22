@@ -31,6 +31,7 @@
         hint="Passport Size Photo"
         max-files="1"
         :rules="[(val) => !!val || 'Field is required']"
+        accept=".jpg, image/*"
         multiple
       >
         <template v-slot:prepend>
@@ -270,6 +271,7 @@
         hint="Front File(Capturing both Left & Right Sides)"
         max-files="1"
         :rules="[(val) => !!val || 'Field is required']"
+        accept=".jpg, image/*"
         multiple
       >
         <template v-slot:prepend>
@@ -299,6 +301,7 @@
         hint="Inside / Back File(Capturing both Inner Sides) *"
         max-files="1"
         :rules="[(val) => !!val || 'Field is required']"
+        accept=".jpg, image/*"
         multiple
       >
         <template v-slot:prepend>
@@ -334,6 +337,7 @@
         hint="Front File(Capturing both Left & Right Sides)"
         max-files="1"
         :rules="[(val) => !!val || 'Field is required']"
+        accept=".jpg, image/*"
         multiple
       >
         <template v-slot:prepend>
@@ -363,6 +367,7 @@
         hint="Inside / Back File(Capturing both Inner Sides) *"
         max-files="1"
         :rules="[(val) => !!val || 'Field is required']"
+        accept=".jpg, image/*"
         multiple
       >
         <template v-slot:prepend>
