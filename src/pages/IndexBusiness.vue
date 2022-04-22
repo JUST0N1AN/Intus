@@ -29,7 +29,7 @@
         </p>
         <p>
           The links below may aid in your navigation of our site. Contact us via
-          <a href="intus.auto.response@gmail.com">Email</a>
+          <a :href="`mailto:intus.auto.response@gmail.com`">Email</a>
         </p>
       </q-card-section>
 
@@ -55,6 +55,11 @@ export default defineComponent({
     return {
       loggedIn: false,
     };
+  },
+  methods: {
+    goTo() {
+      window.open("intus.auto.response@gmail.com", "_blank");
+    },
   },
 });
 </script>
