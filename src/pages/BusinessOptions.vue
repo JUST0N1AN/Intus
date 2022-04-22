@@ -1,14 +1,14 @@
 <template>
   <div>
-    <h3 class="row justify-center">Business Options</h3>
+    <h3 class="text-primary row justify-center">Business Options</h3>
     <q-card>
       <q-tabs
         v-model="tab"
         dense
         outside-arrows
-        class="text-grey"
-        active-color="primary"
-        indicator-color="primary"
+        class="text-white bg-primary"
+        active-color="secondary"
+        indicator-color="secondary"
         align="justify"
         narrow-indicator
       >

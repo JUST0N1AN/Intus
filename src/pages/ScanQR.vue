@@ -1,5 +1,5 @@
 <template>
-  <div class="row justify-center" v-if="scanned == false">
+  <div class="text-primary row justify-center" v-if="scanned == false">
     <h5>Point Camera To QRCode to Scan</h5>
   </div>
   <div class="row justify-center">
@@ -11,15 +11,15 @@
       >Scan Again</q-btn
     >
   </div>
-  <div class="row" v-if="scanned == false">
+  <div class="text-primary row" v-if="scanned == false">
     <div class="col-6 offset-3">
       <qrcode-stream @decode="onDecode" @init="onInit"></qrcode-stream>
     </div>
   </div>
   <div class="row justify-center" v-if="scanned == true">
-    <div>
+    <div class="row justify-center">
       <q-card class="my-card bg-primary text-white">
-        <img :src="profPic" width="350" height="350" />
+        <img :src="profPic" width="" height="300 " />
 
         <q-card-section>
           <div class="text-h6">{{ Name }}</div>
@@ -29,37 +29,43 @@
 
         <q-card-section class="q-pt-none">
           <p>
-            ID CARD:
+            <strong>ID CARD:</strong>
             <q-icon
               color="black"
+              style="font-size: 25px"
               v-if="this.idVal == true"
               name="las la-check-double"
             /><q-icon
               color="red"
+              style="font-size: 25px"
               v-if="this.idVal == false"
               name="las la-exclamation-circle"
             />
           </p>
           <p>
-            FRONT OF VACCINATION CARD:
+            <strong>FRONT OF VACCINATION CARD:</strong>
             <q-icon
               color="black"
+              style="font-size: 25px"
               v-if="this.fVal == true"
               name="las la-check-double"
             /><q-icon
               color="red"
+              style="font-size: 25px"
               v-if="this.fVal == false"
               name="las la-exclamation-circle"
             />
           </p>
           <p>
-            INSIDE OF VACCINATION CARD:
+            <strong>INSIDE OF VACCINATION CARD:</strong>
             <q-icon
               color="black"
+              style="font-size: 25px"
               v-if="this.iVal == true"
               name="las la-check-double"
             /><q-icon
               color="red"
+              style="font-size: 25px"
               v-if="this.iVal == false"
               name="las la-exclamation-circle"
             />
@@ -73,6 +79,8 @@
           <p style="font-size: 15px">
             <q-icon color="black" name="las la-check-double" />
             means our system has fully verified a document.
+          </p>
+          <p>
             <q-icon color="red" name="las la-exclamation-circle" />
             indicates that you must manually verify the document via the links
             below.
@@ -80,16 +88,16 @@
         </q-card-section>
 
         <q-card-actions>
-          <q-btn style="font-size: 10px" @click="gotoUrl(this.idFPic)" flat
+          <q-btn style="font-size: 12px" @click="gotoUrl(this.idFPic)" flat
             >Front ID Card</q-btn
           >
-          <q-btn style="font-size: 10px" @click="gotoUrl(this.idBPic)" flat
+          <q-btn style="font-size: 12px" @click="gotoUrl(this.idBPic)" flat
             >Back ID Card</q-btn
           >
-          <q-btn style="font-size: 10px" @click="gotoUrl(this.fVaxPic)" flat
+          <q-btn style="font-size: 12px" @click="gotoUrl(this.fVaxPic)" flat
             >Front Vax Card</q-btn
           >
-          <q-btn style="font-size: 10px" @click="gotoUrl(this.iVaxPic)" flat
+          <q-btn style="font-size: 12px" @click="gotoUrl(this.iVaxPic)" flat
             >Inside Vax Card</q-btn
           >
         </q-card-actions>

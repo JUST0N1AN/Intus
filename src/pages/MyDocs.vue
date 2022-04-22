@@ -1,11 +1,13 @@
 <template>
   <div class="row justify-center">
-    <h5 class="row justify-center">These are Your Documents and Info</h5>
+    <p class="text-primary" style="font-size: 30px">
+      These are Your Documents and Information
+    </p>
   </div>
   <div class="row justify-center">
     <div class="row justify-center">
       <q-card class="my-card bg-primary text-white">
-        <img :src="pPhoto" width="250" height="300" />
+        <img :src="pPhoto" width="300" height="300" />
 
         <q-card-section>
           <div class="text-h6">{{ name }}</div>
@@ -15,37 +17,43 @@
 
         <q-card-section class="q-pt-none">
           <p>
-            ID CARD:
+            <strong>ID CARD:</strong>
             <q-icon
               color="black"
+              style="font-size: 25px"
               v-if="this.idVal == true"
               name="las la-check-double"
             /><q-icon
               color="red"
+              style="font-size: 25px"
               v-if="this.idVal == false"
               name="las la-exclamation-circle"
             />
           </p>
           <p>
-            FRONT OF VACCINATION CARD:
+            <strong>FRONT OF VACCINATION CARD:</strong>
             <q-icon
               color="black"
+              style="font-size: 25px"
               v-if="this.fVal == true"
               name="las la-check-double"
             /><q-icon
               color="red"
+              style="font-size: 25px"
               v-if="this.fVal == false"
               name="las la-exclamation-circle"
             />
           </p>
           <p>
-            INSIDE OF VACCINATION CARD:
+            <strong>INSIDE OF VACCINATION CARD:</strong>
             <q-icon
               color="black"
+              style="font-size: 25px"
               v-if="this.iVal == true"
               name="las la-check-double"
             /><q-icon
               color="red"
+              style="font-size: 25px"
               v-if="this.iVal == false"
               name="las la-exclamation-circle"
             />
@@ -64,16 +72,16 @@
         </q-card-section>
 
         <q-card-actions>
-          <q-btn style="font-size: 10px" @click="gotoUrl(this.frontID)" flat
+          <q-btn style="font-size: 12px" @click="gotoUrl(this.frontID)" flat
             >Front ID Card</q-btn
           >
-          <q-btn style="font-size: 10px" @click="gotoUrl(this.backID)" flat
+          <q-btn style="font-size: 12px" @click="gotoUrl(this.backID)" flat
             >Back ID Card</q-btn
           >
-          <q-btn style="font-size: 10px" @click="gotoUrl(this.frontVax)" flat
+          <q-btn style="font-size: 12px" @click="gotoUrl(this.frontVax)" flat
             >Front Vax Card</q-btn
           >
-          <q-btn style="font-size: 10px" @click="gotoUrl(this.inVax)" flat
+          <q-btn style="font-size: 12px" @click="gotoUrl(this.inVax)" flat
             >Inside Vax Card</q-btn
           >
         </q-card-actions>
@@ -151,4 +159,6 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+@import url("http://fonts.cdnfonts.com/css/garet");
+</style>

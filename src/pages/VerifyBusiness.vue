@@ -1,14 +1,20 @@
 <template>
-  <h3 class="row justify-center">Business Verification</h3>
+  <h3 class="text-primary row justify-center">Business Verification</h3>
 
-  <div v-if="!this.approved && this.exists && !this.declined">
+  <div
+    class="text-primary"
+    v-if="!this.approved && this.exists && !this.declined"
+  >
     <h5 class="row justify-center">Your Application Is Pending Approval</h5>
     <p class="row justify-center">
       You can edit your application and resubmit.
     </p>
   </div>
 
-  <div v-if="!this.approved && this.exists && this.declined">
+  <div
+    class="text-primary"
+    v-if="!this.approved && this.exists && this.declined"
+  >
     <h5 class="row justify-center">
       Your Application Has Been Declined (Please Resubmit Correct Documents)
     </h5>
@@ -19,6 +25,10 @@
     <div class="col-6 offset-3">
       <q-form ref="form">
         <q-input
+          class="q-mb-md"
+          color="primary"
+          bg-color="white"
+          label-color="secondary"
           square
           filled
           label="Registered Business Name"
@@ -29,6 +39,10 @@
         />
 
         <q-input
+          class="q-mb-md"
+          color="primary"
+          bg-color="white"
+          label-color="secondary"
           square
           filled
           v-model="formData.regNumber"
@@ -41,6 +55,10 @@
         />
 
         <q-select
+          class="q-mb-md"
+          color="primary"
+          bg-color="white"
+          label-color="secondary"
           square
           filled
           v-model="formData.type"
@@ -51,6 +69,10 @@
         />
 
         <q-input
+          class="q-mb-md"
+          color="primary"
+          bg-color="white"
+          label-color="secondary"
           square
           filled
           label=" Address"
@@ -64,6 +86,10 @@
         </q-input>
 
         <q-input
+          class="q-mb-md"
+          color="primary"
+          bg-color="white"
+          label-color="secondary"
           square
           filled
           label=" Contact Number"
@@ -79,6 +105,10 @@
         </q-input>
 
         <q-file
+          class="q-mb-md"
+          color="primary"
+          bg-color="white"
+          label-color="secondary"
           v-model="formData.file"
           label="Upload Proof of Address"
           square
@@ -113,13 +143,11 @@
     </div>
   </div>
 
-  <div class="q-pa-md" v-if="this.approved">
+  <div class="text-primary q-pa-md" v-if="this.approved">
     <h5 class="row justify-center">Your application has been approved</h5>
-    <q-icon
-      class="las la-check-circle row justify-center"
-      size="xl"
-      color="green"
-    ></q-icon>
+    <div class="row justify-center">
+      <q-icon class="las la-check-circle" size="xl" color="green"></q-icon>
+    </div>
   </div>
 </template>
 

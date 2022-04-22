@@ -1,36 +1,46 @@
 <template>
   <div class="row">
-    <div class="col-6 offset-3">
+    <div class="text-primary col-6 offset-3">
       <h3>Register Business Account</h3>
       <div class="row">
         <div class="col-6 offset-3">
           <q-form>
             <q-input
+              color="primary"
+              bg-color="white"
               square
               filled
               v-model="bname"
               label="Business Name"
+              label-color="secondary"
               type="text"
               :rules="['Field is required']"
               id="bname"
               required
             />
             <q-input
+              color="primary"
+              bg-color="white"
               square
               filled
               v-model="email"
               label="Email"
+              label-color="secondary"
               type="email"
               :rules="[(val) => val.includes('@') || 'Field is required']"
               id="email"
               required
             />
             <q-input
+              class="q-mb-md"
+              color="primary"
+              bg-color="white"
               square
               filled
               v-model="password"
               :type="isPwd ? 'password' : 'text'"
-              hint="Password"
+              label="Password"
+              label-color="secondary"
             >
               <template v-slot:append>
                 <q-icon
@@ -42,12 +52,16 @@
             </q-input>
 
             <q-input
+              class="q-mb-md"
+              color="primary"
+              bg-color="white"
               style="q-pt-md"
               square
               filled
               v-model="secondPass"
               :type="isPwd2 ? 'password' : 'text'"
-              hint="Please Retype Password"
+              label="Please Retype Password"
+              label-color="secondary"
             >
               <template v-slot:append>
                 <q-icon
@@ -58,11 +72,14 @@
               </template>
             </q-input>
             <q-input
+              color="primary"
+              bg-color="white"
               class="q-pt-md"
               square
               filled
               v-model="desc"
               label="Business Description"
+              label-color="secondary"
               type="textarea"
               :rules="['Field is required']"
               id="desc"
@@ -138,4 +155,7 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.q-input {
+}
+</style>

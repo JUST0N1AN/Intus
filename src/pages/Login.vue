@@ -1,8 +1,7 @@
 <template>
   <div>
-    <div class="row justify-center">Login Page</div>
     <div class="row justify-center">
-      <div class="justify-center">
+      <div class="text-primary justify-center">
         <h3>Login to Your Account</h3>
       </div>
     </div>
@@ -10,6 +9,9 @@
       <div class="col-6 offset-3">
         <q-form>
           <q-input
+            color="primary"
+            bg-color="white"
+            label-color="secondary"
             square
             filled
             v-model="email"
@@ -20,11 +22,15 @@
             required
           />
           <q-input
+            class="q-mb-md"
+            color="primary"
+            bg-color="white"
+            label-color="secondary"
             square
             filled
             v-model="password"
             :type="isPwd ? 'password' : 'text'"
-            hint="Password"
+            label="Password"
           >
             <template v-slot:append>
               <q-icon

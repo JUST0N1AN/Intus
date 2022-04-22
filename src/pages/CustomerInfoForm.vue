@@ -1,5 +1,7 @@
 <template>
-  <h3 class="row justify-center">Customer Information Registration Form</h3>
+  <h3 class="text-primary row justify-center">
+    Customer Information Registration Form
+  </h3>
 
   <div class="q-pa-md">
     <q-img
@@ -9,18 +11,23 @@
       img-class="my-custom-image"
       class="rounded-borders"
     ></q-img>
-    <p>
+    <p class="text-primary">
       <strong>Passport Size Photo</strong>
     </p>
   </div>
   <div class>
     <q-form>
       <q-file
+        class="q-mb-md"
+        color="primary"
+        bg-color="white"
+        label-color="secondary"
         v-model="formData.passportPhoto"
         label="Upload Passport Size Photo"
         square
         filled
         counter
+        :input-style="{ color: '#2FDABB' }"
         hint="Passport Size Photo"
         max-files="1"
         :rules="[(val) => !!val || 'Field is required']"
@@ -31,8 +38,12 @@
         </template>
       </q-file>
 
-      <strong>First Name</strong>
+      <strong class="text-primary">First Name</strong>
       <q-input
+        class="q-mb-md"
+        color="primary"
+        bg-color="white"
+        label-color="secondary"
         square
         filled
         label="First Name"
@@ -41,8 +52,12 @@
         id="firstName"
         required
       />
-      <strong>Last Name</strong>
+      <strong class="text-primary">Last Name</strong>
       <q-input
+        class="q-mb-md"
+        color="primary"
+        bg-color="white"
+        label-color="secondary"
         square
         filled
         label="Last Name"
@@ -55,8 +70,12 @@
       <!-- <strong>Age</strong>
       <q-input v-model.number="formData.age" type="number" filled style="max-width: 200px" /> -->
 
-      <strong>Date of Birth</strong>
+      <strong class="text-primary">Date of Birth</strong>
       <q-input
+        class="q-mb-md"
+        color="primary"
+        bg-color="white"
+        label-color="secondary"
         filled
         v-model="formData.DOB"
         mask="date"
@@ -81,8 +100,12 @@
         </template>
       </q-input>
 
-      <strong>Contact Number</strong>
+      <strong class="text-primary">Contact Number</strong>
       <q-input
+        class="q-mb-md"
+        color="primary"
+        bg-color="white"
+        label-color="secondary"
         square
         filled
         label=" Contact Number"
@@ -97,8 +120,12 @@
         </template>
       </q-input>
 
-      <strong>Identification Type</strong>
+      <strong class="text-primary">Identification Type</strong>
       <q-select
+        class="q-mb-md"
+        color="primary"
+        bg-color="white"
+        label-color="secondary"
         square
         filled
         v-model="formData.identificationType"
@@ -107,8 +134,12 @@
         id="type"
         :rules="[(val) => !!val || 'Field is required']"
       />
-      <strong>Identification Number</strong>
+      <strong class="text-primary">Identification Number</strong>
       <q-input
+        class="q-mb-md"
+        color="primary"
+        bg-color="white"
+        label-color="secondary"
         square
         filled
         label="Identification Number"
@@ -117,8 +148,12 @@
         id="idNumber"
         required
       />
-      <strong>Vaccine Type - 1st Dose</strong>
+      <strong class="text-primary">Vaccine Type - 1st Dose</strong>
       <q-select
+        class="q-mb-md"
+        color="primary"
+        bg-color="white"
+        label-color="secondary"
         square
         filled
         v-model="formData.vaccine.firstDoseType"
@@ -127,8 +162,12 @@
         id="type"
         :rules="[(val) => !!val || 'Field is required']"
       />
-      <strong>Vaccine Type - 1st Dose Date</strong>
+      <strong class="text-primary">Vaccine Type - 1st Dose Date</strong>
       <q-input
+        class="q-mb-md"
+        color="primary"
+        bg-color="white"
+        label-color="secondary"
         filled
         v-model="formData.vaccine.firstDoseDate"
         mask="date"
@@ -153,8 +192,12 @@
         </template>
       </q-input>
 
-      <strong>Vaccine Type - 2nd Dose</strong>
+      <strong class="text-primary">Vaccine Type - 2nd Dose</strong>
       <q-select
+        class="q-mb-md"
+        color="primary"
+        bg-color="white"
+        label-color="secondary"
         square
         filled
         v-model="formData.vaccine.secondDoseType"
@@ -163,8 +206,12 @@
         id="type"
         :rules="[(val) => !!val || 'Field is required']"
       />
-      <strong>Vaccine Type - 2nd Dose</strong>
+      <strong class="text-primary">Vaccine Type - 2nd Dose</strong>
       <q-input
+        class="q-mb-md"
+        color="primary"
+        bg-color="white"
+        label-color="secondary"
         filled
         v-model="formData.vaccine.secondDoseDate"
         mask="date"
@@ -189,14 +236,14 @@
         </template>
       </q-input>
       <br />
-      <strong
+      <strong class="text-primary"
         >Plese upload either PDF,PNG or JPEG files for the documents submitted
         below</strong
       >
       <br />
       <br />
       <br />
-      <strong
+      <strong class="text-primary"
         >File Upload - Vaccination Card.(Front and Inside of Immunization
         Card)</strong
       >
@@ -211,6 +258,10 @@
       </div>
 
       <q-file
+        class="q-mb-md"
+        color="primary"
+        bg-color="white"
+        label-color="secondary"
         v-model="formData.documents.frontVaccinationCard"
         label="Front File(Capturing both Left & Right Sides) "
         square
@@ -236,6 +287,10 @@
         ></q-img>
       </div>
       <q-file
+        class="q-mb-md"
+        color="primary"
+        bg-color="white"
+        label-color="secondary"
         v-model="formData.documents.insideVaccinationCard"
         label="Inside / Back File(Capturing both Inner Sides) * "
         square
@@ -252,7 +307,7 @@
         <template v-slot:hint>Field hint</template>
       </q-file>
 
-      <strong
+      <strong class="text-primary"
         >File Upload - Identification used above (Birth Paper, Drivers Permit,
         National Identification Card or Passport)</strong
       >
@@ -267,6 +322,10 @@
       </div>
 
       <q-file
+        class="q-mb-md"
+        color="primary"
+        bg-color="white"
+        label-color="secondary"
         v-model="formData.documents.identificationUsedFront"
         label="Front File(Capturing both Left & Right Sides) "
         square
@@ -292,6 +351,10 @@
         ></q-img>
       </div>
       <q-file
+        class="q-mb-md"
+        color="primary"
+        bg-color="white"
+        label-color="secondary"
         v-model="formData.documents.identificationUsedBack"
         label="Inside / Back File(Capturing both Inner Sides) * "
         square

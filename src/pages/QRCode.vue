@@ -1,8 +1,8 @@
 <template>
-  <div class="row justify-center">
+  <div class="text-primary row justify-center">
     <h4>Link to your Documents</h4>
   </div>
-  <div class="row justify-center">
+  <div class="text-primary row justify-center">
     <div class="q-my-md">{{ textOnScreen }}</div>
   </div>
   <div class="row justify-center" ref="qrcode"></div>

@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-6 offset-3 q-pt-md">
-      <q-card dark bordered class="bg-grey-9 my-card">
+      <q-card dark bordered class="bg-primary my-card">
         <q-card-section>
           <div class="text-h3" align="center">Intus</div>
           <div class="text-h6">INFO3604: Project</div>
@@ -30,5 +30,3 @@
     </div>
   </div>
 </template>
-
-<style></style>

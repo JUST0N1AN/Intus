@@ -17,7 +17,13 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+    <q-drawer
+      class="text-white"
+      style="background-color: #2e2d2d"
+      v-model="leftDrawerOpen"
+      show-if-above
+      bordered
+    >
       <q-icon></q-icon>
       <q-list>
         <q-item clickable v-ripple to="/">
@@ -175,3 +181,9 @@ export default defineComponent({
   },
 });
 </script>
+<style>
+body {
+  font-family: "Garet", sans-serif;
+  background-color: #2e2d2d;
+}
+</style>

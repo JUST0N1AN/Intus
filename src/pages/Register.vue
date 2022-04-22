@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="row justify-center">Register An Account</h3>
+    <h3 class="text-primary row justify-center">Register An Account</h3>
     <p class="row justify-center">
       <q-btn class="q-mb-md" to="/regbusiness" color="primary"
         >Click Here to Register a Business</q-btn
@@ -10,16 +10,22 @@
       <div class="col-6 offset-3">
         <q-form>
           <q-input
+            color="primary"
+            bg-color="white"
             square
             filled
             v-model="email"
             label="Email"
+            label-color="secondary"
             type="email"
             :rules="[(val) => val.includes('@') || 'Field is required']"
             id="email"
             required
           />
           <q-input
+            color="primary"
+            bg-color="white"
+            label-color="secondary"
             square
             filled
             v-model="uname"
@@ -30,11 +36,15 @@
             required
           />
           <q-input
+            class="q-mb-md"
+            color="primary"
+            bg-color="white"
+            label-color="secondary"
+            label="Password"
             square
             filled
             v-model="password"
             :type="isPwd ? 'password' : 'text'"
-            hint="Password"
           >
             <template v-slot:append>
               <q-icon
@@ -46,11 +56,15 @@
           </q-input>
 
           <q-input
+            class="q-mb-md"
+            color="primary"
+            bg-color="white"
+            label-color="secondary"
+            label="Please Re-Enter Password"
             square
             filled
             v-model="secondPass"
             :type="isPwd2 ? 'password' : 'text'"
-            hint="Please Retype Password"
           >
             <template v-slot:append>
               <q-icon

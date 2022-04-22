@@ -1,14 +1,14 @@
 <template>
   <div class="q-pa-md">
-    <h3 class="row justify-center">Admin Panel</h3>
+    <h3 class="text-primary row justify-center">Admin Panel</h3>
     <q-card>
       <q-tabs
         v-model="tab"
         outside-arrows
         dense
-        class="text-grey"
-        active-color="primary"
-        indicator-color="primary"
+        class="text-white bg-primary"
+        active-color="secondary"
+        indicator-color="secondary"
         align="justify"
         narrow-indicator
       >

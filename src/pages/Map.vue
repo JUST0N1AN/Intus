@@ -1,17 +1,17 @@
 <template>
   <div class="row justify-center">
     <div id="MAP">
-      <h3 class="row justify-center">Locations</h3>
+      <h3 class="text-primary row justify-center">Locations</h3>
       <div class="row q-mb-md">
-        <q-list bordered separator>
+        <q-list class="bg-primary" bordered separator>
           <q-item v-ripple v-for="x in this.markers" :key="x">
             <q-item-section> {{ x.name }}</q-item-section>
             <q-item-section avatar>
               <q-avatar
                 clickable
                 rounded
-                color="primary"
-                text-color="white"
+                color="secondary"
+                text-color="primary"
                 icon="las la-map-marker"
                 @click="goToLocation(x)"
               />
@@ -36,7 +36,7 @@
       navigation-icon="radio_button_unchecked"
       navigation
       padding
-      class="bg-white shadow-1 rounded-borders"
+      class="text-white bg-secondary rounded-borders"
     >
       <q-carousel-slide :name="1" class="column no-wrap flex-center">
         <q-icon name="las la-igloo" color="primary" size="56px" />
