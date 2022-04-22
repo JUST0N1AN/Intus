@@ -32,12 +32,6 @@
           </q-item-section>
           <q-item-section>Home</q-item-section>
         </q-item>
-        <q-item clickable v-ripple to="map">
-          <q-item-section avatar>
-            <q-icon color="primary" name="las la-map-marked-alt" />
-          </q-item-section>
-          <q-item-section>Map</q-item-section>
-        </q-item>
         <q-item clickable v-ripple v-if="loggedIn" v-on:click="logoutUser">
           <q-item-section avatar>
             <q-icon color="primary" name="las la-sign-out-alt" />
