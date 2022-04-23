@@ -154,8 +154,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.q-input {
-}
-</style>
