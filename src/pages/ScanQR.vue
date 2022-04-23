@@ -139,7 +139,7 @@ export default {
       firstVaxDate: null,
       secondVaxType: null,
       secondVaxDate: null,
-      age: 20,
+      age: null,
       dob: null,
     };
   },
@@ -154,6 +154,7 @@ export default {
           docSnap.data().customerInfo.firstName +
           " " +
           docSnap.data().customerInfo.lastName;
+        this.age = docSnap.data().customerInfo.age;
         this.profPic = docSnap.data().customerInfo.documents.passportPhoto;
         this.fVaxPic = docSnap.data().customerInfo.documents.frontVaxCard;
         this.iVaxPic = docSnap.data().customerInfo.documents.insideVaxCard;
