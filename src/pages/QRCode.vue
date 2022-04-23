@@ -5,7 +5,19 @@
   <div class="text-primary row justify-center">
     <div class="q-my-md">{{ textOnScreen }}</div>
   </div>
-  <div class="row justify-center" ref="qrcode"></div>
+  <!-- <div style="background-color: white" class=""> -->
+  <div class="row justify-center">
+    <div
+      style="
+        margin-left: auto;
+        margin-right: auto;
+        background-color: white;
+        padding: 10px;
+      "
+      ref="qrcode"
+    ></div>
+  </div>
+  <!-- </div> -->
 </template>
 
 <script>
