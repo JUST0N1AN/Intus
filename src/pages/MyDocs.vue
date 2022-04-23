@@ -121,7 +121,7 @@ export default {
       iVal: false,
       idVal: false,
       name: null,
-      age: 20,
+      age: null,
       dob: null,
     };
   },
@@ -138,6 +138,7 @@ export default {
           " " +
           docSnap.data().customerInfo.lastName;
         this.dob = docSnap.data().customerInfo.DOB;
+        this.age = docSnap.data().customerInfo.age;
         this.frontVax = docSnap.data().customerInfo.documents.frontVaxCard;
         this.inVax = docSnap.data().customerInfo.documents.insideVaxCard;
         this.frontID = docSnap.data().customerInfo.documents.idFront;
